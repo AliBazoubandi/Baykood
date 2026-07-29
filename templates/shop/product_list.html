@@ -14,9 +14,9 @@
     </div>
     <p class="text-earth-400 text-sm">
       {% if current_category %}
-        دسته‌بندی: {{ current_category.name }}
+      دسته‌بندی: {{ current_category.name }}
       {% else %}
-        همه محصولات
+      همه محصولات
       {% endif %}
     </p>
   </div>
@@ -24,7 +24,7 @@
 
 <div class="max-w-6xl mx-auto px-6 py-12">
   <div class="flex flex-col lg:flex-row gap-10">
-
+    
     <!-- ── Sidebar ── -->
     <aside class="w-full lg:w-56 shrink-0">
       <div class="bg-white rounded-2xl border border-earth-100 overflow-hidden sticky top-24">
@@ -35,112 +35,115 @@
         <ul class="py-2">
           <li>
             <a href="{% url 'shop:product_list' %}"
-               class="flex items-center gap-2 px-5 py-3 text-sm transition hover:bg-earth-50
+            class="flex items-center gap-2 px-5 py-3 text-sm transition hover:bg-earth-50
                {% if not current_category %}font-bold text-earth-800 bg-earth-50{% else %}text-earth-600{% endif %}">
-              <i data-lucide="grid-2x2" class="w-4 h-4 shrink-0"></i>
-              همه محصولات
-            </a>
-          </li>
-          {% for category in categories %}
-          <li>
-            <a href="{{ category.get_absolute_url }}"
-               class="flex items-center gap-2 px-5 py-3 text-sm transition hover:bg-earth-50
-               {% if current_category.slug == category.slug %}font-bold text-earth-800 bg-earth-50{% else %}text-earth-600{% endif %}">
-              <i data-lucide="tag" class="w-4 h-4 shrink-0"></i>
-              {{ category.name }}
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-    </aside>
-
-    <!-- ── Products grid ── -->
-    <div class="flex-1">
-
-      {% if products %}
-        <p class="text-earth-500 text-sm mb-6">
-          {{ products.count }} محصول یافت شد
-        </p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-          {% for product in products %}
-          <div class="group bg-white rounded-2xl overflow-hidden border border-earth-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-
-            <!-- Image -->
-            <a href="{{ product.get_absolute_url }}" class="block relative overflow-hidden h-56">
-              {% if product.cover_image %}
-                <img src="{{ product.cover_image.url }}" alt="{{ product.name }}"
-                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-              {% else %}
-                <div class="w-full h-full bg-earth-100 flex items-center justify-center">
-                  <i data-lucide="sprout" class="w-12 h-12 text-earth-300"></i>
-                </div>
-              {% endif %}
-
-              {% if product.is_featured %}
-                <span class="absolute top-3 right-3 bg-earth-700 text-earth-100 text-xs font-bold px-3 py-1 rounded-full">
-                  ویژه
-                </span>
-              {% endif %}
-
-              {% if product.stock == 0 %}
-                <div class="absolute inset-0 bg-earth-900/60 flex items-center justify-center">
-                  <span class="bg-white text-earth-800 font-bold px-4 py-2 rounded-lg text-sm">ناموجود</span>
-                </div>
-              {% endif %}
-            </a>
-
-            <!-- Info -->
-            <div class="p-5">
-              {% if product.category %}
-                <span class="text-xs text-earth-400 mb-1 block">{{ product.category.name }}</span>
-              {% endif %}
-              <a href="{{ product.get_absolute_url }}">
-                <h3 class="font-bold text-earth-800 mb-3 hover:text-earth-600 transition leading-snug">
-                  {{ product.name }}
-                </h3>
-              </a>
-
-              <div class="flex items-center justify-between mt-auto">
-                <span class="font-bold text-earth-700 text-lg">{{ product.formatted_price }}</span>
-
-                {% if product.stock > 0 %}
-                  <form method="post" action="{% url 'shop:cart_add' product.id %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="quantity" value="1">
-                    <button type="submit"
-                            class="flex items-center gap-1.5 bg-earth-700 hover:bg-earth-600 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
-                      <i data-lucide="shopping-basket" class="w-4 h-4"></i>
-                      افزودن
-                    </button>
-                  </form>
-                {% else %}
-                  <span class="text-red-400 text-sm font-medium flex items-center gap-1">
-                    <i data-lucide="x-circle" class="w-4 h-4"></i>
-                    ناموجود
-                  </span>
-                {% endif %}
-              </div>
-            </div>
-
-          </div>
-          {% endfor %}
-        </div>
-
-      {% else %}
-        <div class="flex flex-col items-center justify-center py-24 text-earth-400">
-          <i data-lucide="package-x" class="w-16 h-16 mb-4 opacity-40"></i>
-          <p class="text-lg font-medium mb-1">محصولی یافت نشد</p>
-          <p class="text-sm">در این دسته‌بندی محصولی وجود ندارد</p>
-          <a href="{% url 'shop:product_list' %}"
-             class="mt-6 text-earth-600 hover:text-earth-800 font-medium text-sm border border-earth-300 px-5 py-2 rounded-lg transition">
-            مشاهده همه محصولات
+            <i data-lucide="grid-2x2" class="w-4 h-4 shrink-0"></i>
+            همه محصولات
           </a>
-        </div>
-      {% endif %}
-
-    </div>
+        </li>
+        {% for category in categories %}
+        <li>
+          <a href="{{ category.get_absolute_url }}"
+          class="flex items-center gap-2 px-5 py-3 text-sm transition hover:bg-earth-50
+               {% if current_category.slug == category.slug %}font-bold text-earth-800 bg-earth-50{% else %}text-earth-600{% endif %}">
+          <i data-lucide="tag" class="w-4 h-4 shrink-0"></i>
+          {{ category.name }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
   </div>
+</aside>
+
+<!-- ── Products grid ── -->
+<div class="flex-1">
+  
+  {% if products %}
+  <p class="text-earth-500 text-sm mb-6">
+    {{ page_obj.paginator.count }} محصول
+    {% if page_obj.paginator.num_pages > 1 %}
+    — صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}
+    {% endif %}
+  </p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+    {% for product in products %}
+    <div class="group bg-white rounded-2xl overflow-hidden border border-earth-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+      
+      <!-- Image -->
+      <a href="{{ product.get_absolute_url }}" class="block relative overflow-hidden h-56">
+        {% if product.cover_image %}
+        <img src="{{ product.cover_image.url }}" alt="{{ product.name }}"
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        {% else %}
+        <div class="w-full h-full bg-earth-100 flex items-center justify-center">
+          <i data-lucide="sprout" class="w-12 h-12 text-earth-300"></i>
+        </div>
+        {% endif %}
+        
+        {% if product.is_featured %}
+        <span class="absolute top-3 right-3 bg-earth-700 text-earth-100 text-xs font-bold px-3 py-1 rounded-full">
+          ویژه
+        </span>
+        {% endif %}
+        
+        {% if product.stock == 0 %}
+        <div class="absolute inset-0 bg-earth-900/60 flex items-center justify-center">
+          <span class="bg-white text-earth-800 font-bold px-4 py-2 rounded-lg text-sm">ناموجود</span>
+        </div>
+        {% endif %}
+      </a>
+      
+      <!-- Info -->
+      <div class="p-5">
+        {% if product.category %}
+        <span class="text-xs text-earth-400 mb-1 block">{{ product.category.name }}</span>
+        {% endif %}
+        <a href="{{ product.get_absolute_url }}">
+          <h3 class="font-bold text-earth-800 mb-3 hover:text-earth-600 transition leading-snug">
+            {{ product.name }}
+          </h3>
+        </a>
+        
+        <div class="flex items-center justify-between mt-auto">
+          <span class="font-bold text-earth-700 text-lg">{{ product.formatted_price }}</span>
+          
+          {% if product.stock > 0 %}
+          <form method="post" action="{% url 'shop:cart_add' product.id %}">
+            {% csrf_token %}
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit"
+            class="flex items-center gap-1.5 bg-earth-700 hover:bg-earth-600 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
+            <i data-lucide="shopping-basket" class="w-4 h-4"></i>
+            افزودن
+          </button>
+        </form>
+        {% else %}
+        <span class="text-red-400 text-sm font-medium flex items-center gap-1">
+          <i data-lucide="x-circle" class="w-4 h-4"></i>
+          ناموجود
+        </span>
+        {% endif %}
+      </div>
+    </div>
+    
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<div class="flex flex-col items-center justify-center py-24 text-earth-400">
+  <i data-lucide="package-x" class="w-16 h-16 mb-4 opacity-40"></i>
+  <p class="text-lg font-medium mb-1">محصولی یافت نشد</p>
+  <p class="text-sm">در این دسته‌بندی محصولی وجود ندارد</p>
+  <a href="{% url 'shop:product_list' %}"
+  class="mt-6 text-earth-600 hover:text-earth-800 font-medium text-sm border border-earth-300 px-5 py-2 rounded-lg transition">
+  مشاهده همه محصولات
+</a>
+</div>
+{% endif %}
+{% include 'partials/pagination.html' %}
+</div>
+</div>
 </div>
 
 {% endblock %}

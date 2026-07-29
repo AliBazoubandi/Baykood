@@ -63,8 +63,23 @@
           {% endif %}
         </div>
         
-        <!-- Right side: cart + hamburger -->
+        <!-- Right side: search + cart + hamburger -->
         <div class="flex items-center gap-3">
+          
+          <!-- Search (desktop) -->
+          <form method="get" action="{% url 'shop:search' %}" class="hidden md:flex items-center">
+            <div class="relative">
+              <input
+              type="text"
+              name="q"
+              placeholder="جستجو..."
+              class="bg-earth-700/60 border border-earth-600 text-earth-100 placeholder-earth-400 rounded-lg px-3 py-1.5 text-xs w-36 focus:outline-none focus:border-earth-400 focus:w-48 transition-all duration-300"
+              >
+              <button type="submit" class="absolute left-2 top-1/2 -translate-y-1/2 text-earth-400 hover:text-earth-200 transition">
+                <i data-lucide="search" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </form>
           
           <!-- Cart (always visible) -->
           <a href="{% url 'shop:cart_detail' %}" class="relative hover:text-earth-200 transition">
@@ -118,6 +133,20 @@ class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-earth-800 transit
 </a>
 
 <div class="border-t border-earth-700 my-2"></div>
+<!-- Mobile search -->
+<form method="get" action="{% url 'shop:search' %}" class="px-3 pb-1">
+  <div class="relative">
+    <input
+      type="text"
+      name="q"
+      placeholder="جستجو در سایت..."
+      class="w-full bg-earth-700/60 border border-earth-600 text-earth-100 placeholder-earth-400 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-earth-400 transition"
+    >
+    <button type="submit" class="absolute left-3 top-1/2 -translate-y-1/2 text-earth-400">
+      <i data-lucide="search" class="w-4 h-4"></i>
+    </button>
+  </div>
+</form>
 
 {% if user.is_authenticated %}
 <a href="{% url 'accounts:profile' %}"
@@ -263,9 +292,9 @@ class="flex items-center justify-center gap-2 border border-earth-600 text-earth
 </footer>
 <!-- ── Scroll to top button ── -->
 <button id="scroll-top-btn"
-  aria-label="بازگشت به بالا"
-  class="fixed bottom-6 right-6 z-50 w-11 h-11 bg-earth-700 hover:bg-earth-600 text-white rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
-  <i data-lucide="chevron-up" class="w-5 h-5"></i>
+aria-label="بازگشت به بالا"
+class="fixed bottom-6 right-6 z-50 w-11 h-11 bg-earth-700 hover:bg-earth-600 text-white rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
+<i data-lucide="chevron-up" class="w-5 h-5"></i>
 </button>
 
 <script>lucide.createIcons();</script>
@@ -274,25 +303,25 @@ class="flex items-center justify-center gap-2 border border-earth-600 text-earth
   // ── Shared easing function — defined here so everything can use it ──
   function easeInOutCubic(t) {
     return t < 0.5
-      ? 4 * t * t * t
-      : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    ? 4 * t * t * t
+    : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
-
+  
   // ── Smooth scroll for anchor links ──
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href').slice(1);
       const target   = document.getElementById(targetId);
       if (!target) return;
-
+      
       e.preventDefault();
-
+      
       const startY   = window.scrollY;
       const endY     = target.getBoundingClientRect().top + window.scrollY;
       const distance = endY - startY;
       const duration = 2500;
       let startTime  = null;
-
+      
       function step(timestamp) {
         if (!startTime) startTime = timestamp;
         const elapsed  = timestamp - startTime;
@@ -300,14 +329,14 @@ class="flex items-center justify-center gap-2 border border-earth-600 text-earth
         window.scrollTo(0, startY + distance * easeInOutCubic(progress));
         if (progress < 1) requestAnimationFrame(step);
       }
-
+      
       requestAnimationFrame(step);
     });
   });
-
+  
   // ── Scroll to top button ──
   const scrollTopBtn = document.getElementById('scroll-top-btn');
-
+  
   window.addEventListener('scroll', () => {
     if (window.scrollY > 400) {
       scrollTopBtn.classList.remove('opacity-0', 'pointer-events-none');
@@ -317,12 +346,12 @@ class="flex items-center justify-center gap-2 border border-earth-600 text-earth
       scrollTopBtn.classList.remove('opacity-100');
     }
   });
-
+  
   scrollTopBtn.addEventListener('click', () => {
     const startY   = window.scrollY;
     const duration = 1000;
     let startTime  = null;
-
+    
     function step(timestamp) {
       if (!startTime) startTime = timestamp;
       const elapsed  = timestamp - startTime;
@@ -330,16 +359,16 @@ class="flex items-center justify-center gap-2 border border-earth-600 text-earth
       window.scrollTo(0, startY * (1 - easeInOutCubic(progress)));
       if (progress < 1) requestAnimationFrame(step);
     }
-
+    
     requestAnimationFrame(step);
   });
-
+  
   // ── Hamburger menu toggle ──
   const btn       = document.getElementById('mobile-menu-btn');
   const menu      = document.getElementById('mobile-menu');
   const iconOpen  = document.getElementById('menu-icon-open');
   const iconClose = document.getElementById('menu-icon-close');
-
+  
   if (btn) {
     btn.addEventListener('click', () => {
       const isHidden = menu.classList.contains('hidden');
@@ -347,7 +376,7 @@ class="flex items-center justify-center gap-2 border border-earth-600 text-earth
       iconOpen.classList.toggle('hidden', isHidden);
       iconClose.classList.toggle('hidden', !isHidden);
     });
-
+    
     menu.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
         menu.classList.add('hidden');

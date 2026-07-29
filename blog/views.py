@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Post, Tag
+from django.core.paginator import Paginator
 
 
 def post_list(request, tag_slug=None):
@@ -11,8 +12,13 @@ def post_list(request, tag_slug=None):
         current_tag = get_object_or_404(Tag, slug=tag_slug)
         posts = posts.filter(tags=current_tag)
 
+    paginator = Paginator(posts, 6)  # 6 posts per page
+    page      = request.GET.get('page')
+    page_obj  = paginator.get_page(page)
+
     return render(request, 'blog/post_list.html', {
-        'posts':       posts,
+        'page_obj':    page_obj,
+        'posts':       page_obj,
         'tags':        tags,
         'current_tag': current_tag,
     })

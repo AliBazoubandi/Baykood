@@ -1,6 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Product, Category
+from django.db.models import Q
+from blog.models import Post
+from django.core.paginator import Paginator
 
 
 # ─── helpers ──────────────────────────────────────────────
@@ -22,8 +25,13 @@ def product_list(request, category_slug=None):
         current_category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=current_category)
 
+    paginator = Paginator(products, 9)  # 9 products per page
+    page      = request.GET.get('page')
+    page_obj  = paginator.get_page(page)
+
     return render(request, 'shop/product_list.html', {
-        'products':         products,
+        'page_obj':         page_obj,
+        'products':         page_obj,
         'categories':       categories,
         'current_category': current_category,
     })
@@ -167,3 +175,30 @@ def checkout(request):
 def order_confirmation(request, order_id):
     order = Order.objects.prefetch_related('items__product').get(id=order_id)
     return render(request, 'shop/order_confirmation.html', {'order': order})
+
+
+def search(request):
+    query    = request.GET.get('q', '').strip()
+    products = Product.objects.filter(is_available=True)
+    posts    = Post.objects.filter(is_published=True)
+
+    if query:
+        products = products.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query) |
+            Q(category__name__icontains=query)
+        )
+        posts = posts.filter(
+            Q(title__icontains=query) |
+            Q(body__icontains=query)
+        )
+    else:
+        products = products.none()
+        posts    = posts.none()
+
+    return render(request, 'shop/search.html', {
+        'query':    query,
+        'products': products,
+        'posts':    posts,
+        'total':    products.count() + posts.count(),
+    })

@@ -1,0 +1,41 @@
+{% if page_obj.has_other_pages %}
+<div class="flex items-center justify-center gap-1 mt-10 flex-wrap">
+
+  <!-- Previous -->
+  {% if page_obj.has_previous %}
+    <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ page_obj.previous_page_number }}"
+       class="flex items-center gap-1 px-3 py-2 rounded-lg bg-white border border-earth-200 text-earth-600 hover:bg-earth-50 hover:border-earth-400 transition text-sm font-medium">
+      <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      قبلی
+    </a>
+  {% endif %}
+
+  <!-- Page numbers -->
+  {% for num in page_obj.paginator.page_range %}
+    {% if page_obj.number == num %}
+      <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-earth-800 text-white text-sm font-bold">
+        {{ num }}
+      </span>
+    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+      <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ num }}"
+         class="w-9 h-9 flex items-center justify-center rounded-lg bg-white border border-earth-200 text-earth-600 hover:bg-earth-50 hover:border-earth-400 transition text-sm">
+        {{ num }}
+      </a>
+    {% endif %}
+  {% endfor %}
+
+  <!-- Next -->
+  {% if page_obj.has_next %}
+    <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ page_obj.next_page_number }}"
+       class="flex items-center gap-1 px-3 py-2 rounded-lg bg-white border border-earth-200 text-earth-600 hover:bg-earth-50 hover:border-earth-400 transition text-sm font-medium">
+      بعدی
+      <i data-lucide="chevron-left" class="w-4 h-4"></i>
+    </a>
+  {% endif %}
+
+</div>
+
+<p class="text-center text-earth-400 text-xs mt-3">
+  صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}
+</p>
+{% endif %}

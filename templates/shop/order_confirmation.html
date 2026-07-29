@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}سفارش ثبت شد | {{ site.site_name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-6 py-16 text-center">
+
+  <!-- Success icon -->
+  <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+    <i data-lucide="check-circle" class="w-12 h-12 text-green-600"></i>
+  </div>
+
+  <h1 class="text-3xl font-bold text-earth-800 mb-3">سفارش شما ثبت شد!</h1>
+  <p class="text-earth-500 mb-2">شماره سفارش: <span class="font-bold text-earth-700">#{{ order.id }}</span></p>
+  <p class="text-earth-500 text-sm mb-10">به زودی با شما تماس خواهیم گرفت</p>
+
+  <!-- Order details card -->
+  <div class="bg-white rounded-2xl border border-earth-100 shadow-sm text-right mb-8 overflow-hidden">
+
+    <div class="bg-earth-800 text-earth-100 px-6 py-4 flex items-center gap-2">
+      <i data-lucide="package" class="w-4 h-4"></i>
+      <span class="font-semibold text-sm">جزئیات سفارش</span>
+    </div>
+
+    <div class="px-6 py-5 space-y-3 text-sm">
+      <div class="flex justify-between text-earth-600">
+        <span>نام:</span>
+        <span class="font-medium text-earth-800">{{ order.full_name }}</span>
+      </div>
+      <div class="flex justify-between text-earth-600">
+        <span>تلفن:</span>
+        <span class="font-medium text-earth-800">{{ order.phone }}</span>
+      </div>
+      <div class="flex justify-between text-earth-600 items-start">
+        <span class="shrink-0">آدرس:</span>
+        <span class="font-medium text-earth-800 text-right mr-4">{{ order.address }}</span>
+      </div>
+      {% if order.note %}
+        <div class="flex justify-between text-earth-600 items-start">
+          <span class="shrink-0">توضیحات:</span>
+          <span class="font-medium text-earth-800 text-right mr-4">{{ order.note }}</span>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="border-t border-earth-100 px-6 py-4">
+      <div class="space-y-2 mb-4">
+        {% for item in order.items.all %}
+          <div class="flex justify-between text-sm text-earth-600">
+            <span>{{ item.product.name }} × {{ item.quantity }}</span>
+            <span>{{ item.formatted_subtotal }}</span>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="flex justify-between font-bold text-earth-800 text-base border-t border-earth-100 pt-3">
+        <span>جمع کل</span>
+        <span>{{ order.formatted_total }}</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Telegram follow-up -->
+  <div class="bg-earth-50 border border-earth-200 rounded-2xl p-6 mb-8 text-right">
+    <div class="flex items-start gap-3">
+      <i data-lucide="info" class="w-5 h-5 text-earth-500 shrink-0 mt-0.5"></i>
+      <div>
+        <p class="font-medium text-earth-800 mb-1">مرحله بعدی چیست؟</p>
+        <p class="text-earth-600 text-sm leading-relaxed">
+          تیم ما سفارش شما را بررسی می‌کند و ظرف چند ساعت از طریق شماره تماس یا تلگرام برای هماهنگی پرداخت و ارسال با شما در ارتباط خواهند بود.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-center gap-4 flex-wrap">
+    <a href="{{ site.telegram_url }}" target="_blank"
+       class="inline-flex items-center gap-2 bg-[#2AABEE] hover:bg-[#1a9ad8] text-white font-semibold px-6 py-3 rounded-xl transition">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
+      </svg>
+      پیگیری از طریق تلگرام
+    </a>
+    <a href="{% url 'shop:product_list' %}"
+       class="inline-flex items-center gap-2 border border-earth-300 text-earth-600 hover:border-earth-500 font-medium px-6 py-3 rounded-xl transition">
+      <i data-lucide="store" class="w-4 h-4"></i>
+      ادامه خرید
+    </a>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>صفحه پیدا نشد | کشاورزی سبز</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/output.css' %}">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>body { font-family: 'Vazirmatn', sans-serif; }</style>
+</head>
+<body class="bg-earth-50 min-h-screen flex items-center justify-center px-4">
+
+  <div class="text-center max-w-md">
+    <div class="w-28 h-28 bg-earth-100 rounded-full flex items-center justify-center mx-auto mb-8">
+      <i data-lucide="map-pin-off" class="w-14 h-14 text-earth-400"></i>
+    </div>
+    <h1 class="text-6xl font-bold text-earth-300 mb-4">۴۰۴</h1>
+    <h2 class="text-xl font-bold text-earth-800 mb-3">صفحه پیدا نشد</h2>
+    <p class="text-earth-500 text-sm leading-relaxed mb-8">
+      صفحه‌ای که دنبال آن می‌گردید وجود ندارد یا جابه‌جا شده است.
+    </p>
+    <div class="flex items-center justify-center gap-4 flex-wrap">
+      <a href="/"
+         class="inline-flex items-center gap-2 bg-earth-800 hover:bg-earth-700 text-white font-semibold px-6 py-3 rounded-xl transition">
+        <i data-lucide="home" class="w-4 h-4"></i>
+        صفحه اصلی
+      </a>
+      <a href="/shop/"
+         class="inline-flex items-center gap-2 border border-earth-300 text-earth-600 hover:border-earth-500 font-medium px-6 py-3 rounded-xl transition">
+        <i data-lucide="store" class="w-4 h-4"></i>
+        فروشگاه
+      </a>
+    </div>
+  </div>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>

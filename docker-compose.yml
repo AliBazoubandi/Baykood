@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: agrishop_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: agrishop_db
+      POSTGRES_USER: agrishop_user
+      POSTGRES_PASSWORD: yourpassword123
+    ports:
+      - "5432:5432"
+    volumes:
+      - agrishop_pgdata:/var/lib/postgresql
+
+volumes:
+  agrishop_pgdata:

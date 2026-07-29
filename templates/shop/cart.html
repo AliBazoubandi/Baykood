@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}سبد خرید | {{ site.site_name }}{% endblock %}
+
+{% block content %}
+
+<div class="bg-earth-800 text-earth-50 py-12">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="flex items-center gap-3 mb-2">
+      <i data-lucide="shopping-basket" class="w-6 h-6 text-earth-300"></i>
+      <h1 class="text-2xl font-bold">سبد خرید</h1>
+    </div>
+    <p class="text-earth-400 text-sm">محصولات انتخاب‌شده شما</p>
+  </div>
+</div>
+
+<div class="max-w-5xl mx-auto px-6 py-12">
+
+  {% if cart_items %}
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+      <!-- ── Cart items ── -->
+      <div class="lg:col-span-2 space-y-4">
+
+        {% for item in cart_items %}
+          <div class="bg-white rounded-2xl border border-earth-100 p-5 flex items-center gap-5 shadow-sm hover:shadow-md transition">
+
+            <!-- Product image -->
+            <a href="{{ item.product.get_absolute_url }}" class="shrink-0">
+              {% if item.product.cover_image %}
+                <img src="{{ item.product.cover_image.url }}"
+                     alt="{{ item.product.name }}"
+                     class="w-20 h-20 object-cover rounded-xl">
+              {% else %}
+                <div class="w-20 h-20 bg-earth-100 rounded-xl flex items-center justify-center">
+                  <i data-lucide="sprout" class="w-8 h-8 text-earth-300"></i>
+                </div>
+              {% endif %}
+            </a>
+
+            <!-- Product info -->
+            <div class="flex-1 min-w-0">
+              <a href="{{ item.product.get_absolute_url }}">
+                <h3 class="font-bold text-earth-800 hover:text-earth-600 transition leading-snug mb-1 truncate">
+                  {{ item.product.name }}
+                </h3>
+              </a>
+              {% if item.product.category %}
+                <p class="text-earth-400 text-xs mb-2">{{ item.product.category.name }}</p>
+              {% endif %}
+              <p class="text-earth-500 text-sm">
+                {{ item.product.formatted_price }} × {{ item.quantity }}
+              </p>
+            </div>
+
+            <!-- Subtotal + remove -->
+            <div class="flex flex-col items-end gap-3 shrink-0">
+              <span class="font-bold text-earth-700 text-base">
+                {{ item.subtotal|floatformat:0 }} تومان
+              </span>
+              <form method="post" action="{% url 'shop:cart_remove' item.product.id %}">
+                {% csrf_token %}
+                <button type="submit"
+                        class="flex items-center gap-1.5 text-red-400 hover:text-red-600 text-xs font-medium transition">
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                  حذف
+                </button>
+              </form>
+            </div>
+
+          </div>
+        {% endfor %}
+
+        <!-- Continue shopping -->
+        <div class="pt-2">
+          <a href="{% url 'shop:product_list' %}"
+             class="inline-flex items-center gap-2 text-earth-500 hover:text-earth-700 text-sm transition">
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            ادامه خرید
+          </a>
+        </div>
+
+      </div>
+
+      <!-- ── Order summary ── -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-2xl border border-earth-100 shadow-sm sticky top-24 overflow-hidden">
+
+          <div class="bg-earth-800 text-earth-100 px-6 py-4 flex items-center gap-2">
+            <i data-lucide="receipt" class="w-4 h-4"></i>
+            <span class="font-semibold text-sm">خلاصه سفارش</span>
+          </div>
+
+          <div class="px-6 py-5">
+
+            <!-- Item count + total -->
+            <div class="space-y-3 text-sm mb-5">
+              <div class="flex justify-between text-earth-600">
+                <span>تعداد اقلام</span>
+                <span>{{ cart_items|length }} محصول</span>
+              </div>
+              <div class="flex justify-between text-earth-600">
+                <span>هزینه ارسال</span>
+                <span class="text-green-600 font-medium">پس از تأیید</span>
+              </div>
+              <div class="border-t border-earth-100 pt-3 flex justify-between font-bold text-earth-800 text-base">
+                <span>جمع کل</span>
+                <span>{{ total|floatformat:0 }} تومان</span>
+              </div>
+            </div>
+
+            <!-- Checkout button -->
+            <a href="{% url 'shop:checkout' %}"
+               class="flex items-center justify-center gap-2 bg-earth-800 hover:bg-earth-700 text-white font-semibold py-3.5 rounded-xl transition w-full text-sm mb-3">
+              <i data-lucide="credit-card" class="w-4 h-4"></i>
+              ادامه و ثبت سفارش
+            </a>
+
+            <!-- Telegram fallback -->
+            <a href="{{ site.telegram_url }}" target="_blank"
+               class="flex items-center justify-center gap-2 bg-[#2AABEE] hover:bg-[#1a9ad8] text-white font-medium py-3 rounded-xl transition w-full text-sm mb-4">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
+              </svg>
+              سفارش از طریق تلگرام
+            </a>
+
+            <!-- Trust badges -->
+            <div class="border-t border-earth-100 pt-4 space-y-2 text-xs text-earth-500">
+              <div class="flex items-center gap-2">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-green-500 shrink-0"></i>
+                خرید مطمئن با ضمانت کیفیت
+              </div>
+              <div class="flex items-center gap-2">
+                <i data-lucide="truck" class="w-3.5 h-3.5 text-earth-400 shrink-0"></i>
+                ارسال به سراسر کشور
+              </div>
+              <div class="flex items-center gap-2">
+                <i data-lucide="headset" class="w-3.5 h-3.5 text-earth-400 shrink-0"></i>
+                پشتیبانی از طریق تلگرام
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  {% else %}
+
+    <!-- Empty cart -->
+    <div class="flex flex-col items-center justify-center py-32 text-earth-400">
+      <div class="w-28 h-28 bg-earth-100 rounded-full flex items-center justify-center mb-6">
+        <i data-lucide="shopping-basket" class="w-14 h-14 opacity-40"></i>
+      </div>
+      <p class="text-xl font-bold text-earth-600 mb-2">سبد خرید خالی است</p>
+      <p class="text-sm text-earth-400 mb-8">هنوز محصولی به سبد اضافه نکرده‌اید</p>
+      <a href="{% url 'shop:product_list' %}"
+         class="inline-flex items-center gap-2 bg-earth-800 hover:bg-earth-700 text-white font-semibold px-8 py-3.5 rounded-xl transition">
+        <i data-lucide="store" class="w-4 h-4"></i>
+        رفتن به فروشگاه
+      </a>
+    </div>
+
+  {% endif %}
+
+</div>
+
+{% endblock %}

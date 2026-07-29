@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+  --font-vazir: 'Vazirmatn', sans-serif;
+
+  --color-earth-50:  #faf6f0;
+  --color-earth-100: #f0e6d3;
+  --color-earth-200: #ddc9a8;
+  --color-earth-300: #c8a87c;
+  --color-earth-400: #b08a56;
+  --color-earth-500: #8c6a3a;
+  --color-earth-600: #6e5030;
+  --color-earth-700: #503a24;
+  --color-earth-800: #352618;
+  --color-earth-900: #1e150d;
+}

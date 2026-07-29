@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} | {{ site.site_name }}{% endblock %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto px-6 py-12">
+  
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-2 text-sm text-earth-400 mb-8">
+    <a href="{% url 'core:home' %}" class="hover:text-earth-600 transition">خانه</a>
+    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+    <a href="{% url 'shop:product_list' %}" class="hover:text-earth-600 transition">فروشگاه</a>
+    {% if product.category %}
+    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+    <a href="{{ product.category.get_absolute_url }}" class="hover:text-earth-600 transition">{{ product.category.name }}</a>
+    {% endif %}
+    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+    <span class="text-earth-700 font-medium">{{ product.name }}</span>
+  </nav>
+  
+  <!-- Main product section -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+    
+    <!-- ── Images ── -->
+    <div>
+      <!-- Main image -->
+      <div class="rounded-2xl overflow-hidden bg-earth-100 mb-4 h-96">
+        {% if product.cover_image %}
+        <img id="main-image" src="{{ product.cover_image.url }}" alt="{{ product.name }}"
+        class="w-full h-full object-cover">
+        {% else %}
+        <div class="w-full h-full flex items-center justify-center">
+          <i data-lucide="image" class="w-20 h-20 text-earth-300"></i>
+        </div>
+        {% endif %}
+      </div>
+      
+      <!-- Thumbnail gallery -->
+      {% if gallery_images %}
+      <div class="flex gap-3 overflow-x-auto pb-2">
+        {% if product.cover_image %}
+        <img src="{{ product.cover_image.url }}" alt="{{ product.name }}"
+        onclick="document.getElementById('main-image').src = this.src"
+        class="w-20 h-20 object-cover rounded-xl cursor-pointer border-2 border-earth-400 shrink-0 hover:opacity-80 transition">
+        {% endif %}
+        {% for img in gallery_images %}
+        <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.name }}"
+        onclick="document.getElementById('main-image').src = this.src"
+        class="w-20 h-20 object-cover rounded-xl cursor-pointer border-2 border-transparent hover:border-earth-400 shrink-0 transition">
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    
+    <!-- ── Product info ── -->
+    <div class="flex flex-col">
+      
+      {% if product.category %}
+      <a href="{{ product.category.get_absolute_url }}"
+      class="inline-flex items-center gap-1.5 text-earth-500 text-sm mb-3 hover:text-earth-700 transition w-fit">
+      <i data-lucide="tag" class="w-4 h-4"></i>
+      {{ product.category.name }}
+    </a>
+    {% endif %}
+    
+    <h1 class="text-3xl font-bold text-earth-900 leading-snug mb-4">{{ product.name }}</h1>
+    
+    {% if product.weight %}
+    <p class="text-earth-500 text-sm mb-4 flex items-center gap-1.5">
+      <i data-lucide="weight" class="w-4 h-4"></i>
+      {{ product.weight }}
+    </p>
+    {% endif %}
+    
+    <!-- Price -->
+    <div class="bg-earth-50 rounded-2xl p-5 mb-6 border border-earth-100">
+      <div class="flex items-center justify-between">
+        <span class="text-earth-500 text-sm">قیمت</span>
+        <span class="text-2xl font-bold text-earth-800">{{ product.formatted_price }}</span>
+      </div>
+      <div class="flex items-center gap-2 mt-3 text-sm">
+        {% if product.stock > 0 %}
+        <i data-lucide="circle-check" class="w-4 h-4 text-green-600"></i>
+        <span class="text-green-700 font-medium">موجود در انبار</span>
+        <span class="text-earth-400 mr-auto">{{ product.stock }} عدد باقی‌مانده</span>
+        {% else %}
+        <i data-lucide="circle-x" class="w-4 h-4 text-red-500"></i>
+        <span class="text-red-600 font-medium">ناموجود</span>
+        {% endif %}
+      </div>
+    </div>
+    
+    <!-- Add to cart -->
+    {% if product.stock > 0 %}
+    <form method="post" action="{% url 'shop:cart_add' product.id %}" class="flex flex-col sm:flex-row gap-3 mb-6">
+      {% csrf_token %}
+      <div class="flex items-center border border-earth-200 rounded-xl overflow-hidden w-fit">
+        <button type="button" onclick="changeQty(-1)"
+        class="px-4 py-3 text-earth-600 hover:bg-earth-100 transition font-bold text-lg">−</button>
+        <input type="number" name="quantity" id="qty" value="1" min="1" max="{{ product.stock }}"
+        class="w-14 text-center py-3 text-earth-800 font-medium border-0 focus:outline-none bg-transparent">
+        <button type="button" onclick="changeQty(1)"
+        class="px-4 py-3 text-earth-600 hover:bg-earth-100 transition font-bold text-lg">+</button>
+      </div>
+      <button type="submit"
+      class="flex-1 flex items-center justify-center gap-2 bg-earth-700 hover:bg-earth-600 text-white font-semibold py-3 rounded-xl transition-all duration-300 hover:shadow-lg">
+      <i data-lucide="shopping-basket" class="w-5 h-5"></i>
+      افزودن به سبد خرید
+    </button>
+  </form>
+  {% endif %}
+  
+  <!-- Contact via Telegram -->
+  <a href="{{ site.telegram_url }}" target="_blank"
+  class="flex items-center justify-center gap-2 border border-earth-300 hover:border-earth-500 text-earth-600 hover:text-earth-800 py-3 rounded-xl transition text-sm font-medium mb-6">
+  <svg class="w-4 h-4 text-[#2AABEE]" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
+  </svg>
+  مشاوره و سفارش از طریق تلگرام
+</a>
+
+<!-- Features -->
+<div class="grid grid-cols-2 gap-3 text-sm">
+  <div class="flex items-center gap-2 text-earth-600">
+    <i data-lucide="truck" class="w-4 h-4 text-earth-400 shrink-0"></i>
+    ارسال به سراسر کشور
+  </div>
+  <div class="flex items-center gap-2 text-earth-600">
+    <i data-lucide="shield-check" class="w-4 h-4 text-earth-400 shrink-0"></i>
+    ضمانت کیفیت
+  </div>
+  <div class="flex items-center gap-2 text-earth-600">
+    <i data-lucide="leaf" class="w-4 h-4 text-green-500 shrink-0"></i>
+    محصول طبیعی
+  </div>
+  <div class="flex items-center gap-2 text-earth-600">
+    <i data-lucide="package-check" class="w-4 h-4 text-earth-400 shrink-0"></i>
+    بسته‌بندی مناسب
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- Description -->
+<div class="bg-white rounded-2xl border border-earth-100 p-8 mb-16">
+  <h2 class="text-xl font-bold text-earth-800 mb-5 flex items-center gap-2">
+    <i data-lucide="file-text" class="w-5 h-5 text-earth-500"></i>
+    توضیحات محصول
+  </h2>
+  <div class="text-earth-700 leading-8 prose-sm max-w-none">
+    {{ product.description|linebreaks }}
+  </div>
+</div>
+
+<!-- Related products -->
+{% if related %}
+<div>
+  <h2 class="text-2xl font-bold text-earth-800 mb-8 flex items-center gap-2">
+    <i data-lucide="grid-2x2" class="w-5 h-5 text-earth-500"></i>
+    محصولات مرتبط
+  </h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    {% for p in related %}
+    <a href="{{ p.get_absolute_url }}"
+    class="group bg-white rounded-2xl overflow-hidden border border-earth-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+    <div class="h-44 overflow-hidden">
+      {% if p.cover_image %}
+      <img src="{{ p.cover_image.url }}" alt="{{ p.name }}"
+      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+      {% else %}
+      <div class="w-full h-full bg-earth-100 flex items-center justify-center">
+        <i data-lucide="sprout" class="w-10 h-10 text-earth-300"></i>
+      </div>
+      {% endif %}
+    </div>
+    <div class="p-4">
+      <h3 class="font-bold text-earth-800 text-sm mb-2 leading-snug">{{ p.name }}</h3>
+      <span class="font-bold text-earth-600 text-sm">{{ p.formatted_price }}</span>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+</div>
+{% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function changeQty(delta) {
+    const input = document.getElementById('qty');
+    const max   = parseInt(input.max);
+    const val   = parseInt(input.value) + delta;
+    if (val >= 1 && val <= max) input.value = val;
+  }
+</script>
+{% endblock %}

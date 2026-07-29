@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}درباره ما | {{ site.site_name }}{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="bg-earth-800 text-earth-50 py-16">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="flex items-center gap-3 mb-3">
+      <i data-lucide="sprout" class="w-6 h-6 text-earth-300"></i>
+      <h1 class="text-2xl font-bold">درباره ما</h1>
+    </div>
+    <p class="text-earth-400 text-sm">آشنایی با {{ site.site_name }}</p>
+  </div>
+</div>
+
+<!-- Story section -->
+<section class="py-20 bg-white">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      
+      <div>
+        <div class="inline-flex items-center gap-2 bg-earth-100 text-earth-700 text-sm font-medium px-4 py-1.5 rounded-full mb-6">
+          <i data-lucide="leaf" class="w-4 h-4"></i>
+          داستان ما
+        </div>
+        <h2 class="text-3xl font-bold text-earth-800 leading-snug mb-6">
+          از دل طبیعت،<br>برای کشاورزی بهتر
+        </h2>
+        <div class="space-y-4 text-earth-600 leading-8 text-sm">
+          <p>
+            {{ site.site_name }} با هدف تأمین بهترین نهاده‌های کشاورزی برای کشاورزان و علاقه‌مندان به کشاورزی شکل گرفت.
+            ما باور داریم که کشاورزی موفق از خاک سالم و نهاده‌های باکیفیت شروع می‌شود.
+          </p>
+          <p>
+            تمام محصولات ما از منابع معتبر و طبیعی تأمین می‌شوند و پیش از عرضه، کیفیت آن‌ها مورد بررسی قرار می‌گیرد.
+            هدف ما کمک به رشد و شکوفایی کشاورزی ایران است.
+          </p>
+          <p>
+            از کودهای آلی گرفته تا بسترهای کاشت و محلول‌های آبیاری — همه چیز را در یک جا پیدا می‌کنید.
+          </p>
+        </div>
+      </div>
+      
+      <!-- Image / visual -->
+      <div class="relative pt-6 pe-6">
+        <div class="bg-gradient-to-br from-earth-200 to-earth-400 rounded-3xl overflow-hidden h-72 flex items-center justify-center">
+          <i data-lucide="tractor" class="w-32 h-32 text-earth-600 opacity-40"></i>
+        </div>
+        <!-- Floating card — repositioned so it stays inside on mobile -->
+        <div class="mt-4 md:mt-0 md:absolute md:-bottom-6 md:-right-6 bg-white rounded-2xl shadow-xl p-5 border border-earth-100 w-fit">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+              <i data-lucide="wheat" class="w-6 h-6 text-green-700"></i>
+            </div>
+            <div>
+              <p class="font-bold text-earth-800 text-sm">محصولات طبیعی</p>
+              <p class="text-earth-500 text-xs">تضمین کیفیت</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+<!-- Values section -->
+<section class="py-20 bg-earth-50">
+  <div class="max-w-5xl mx-auto px-6">
+    
+    <div class="text-center mb-14">
+      <h2 class="text-2xl font-bold text-earth-800 mb-3">ارزش‌های ما</h2>
+      <div class="w-12 h-1 bg-earth-400 mx-auto rounded-full"></div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <div class="bg-white rounded-2xl p-7 border border-earth-100 shadow-sm text-center">
+        <div class="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center mx-auto mb-5">
+          <i data-lucide="leaf" class="w-7 h-7 text-green-700"></i>
+        </div>
+        <h3 class="font-bold text-earth-800 mb-3">طبیعی و سالم</h3>
+        <p class="text-earth-500 text-sm leading-relaxed">
+          تمام محصولات ما از منابع طبیعی تأمین شده و هیچ‌گونه مواد مضر ندارند.
+        </p>
+      </div>
+      
+      <div class="bg-white rounded-2xl p-7 border border-earth-100 shadow-sm text-center">
+        <div class="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto mb-5">
+          <i data-lucide="shield-check" class="w-7 h-7 text-amber-700"></i>
+        </div>
+        <h3 class="font-bold text-earth-800 mb-3">کیفیت تضمین‌شده</h3>
+        <p class="text-earth-500 text-sm leading-relaxed">
+          هر محصول پیش از عرضه بررسی کیفی می‌شود و ضمانت بازگشت وجه داریم.
+        </p>
+      </div>
+      
+      <div class="bg-white rounded-2xl p-7 border border-earth-100 shadow-sm text-center">
+        <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-5">
+          <i data-lucide="messages-square" class="w-7 h-7 text-blue-700"></i>
+        </div>
+        <h3 class="font-bold text-earth-800 mb-3">پشتیبانی واقعی</h3>
+        <p class="text-earth-500 text-sm leading-relaxed">
+          کارشناسان ما از طریق تلگرام همیشه آماده پاسخگویی به سوالات شما هستند.
+        </p>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+<!-- Stats strip -->
+<section class="bg-earth-800 py-12">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div>
+        <p class="text-3xl font-bold text-white mb-1">+۵۰۰</p>
+        <p class="text-earth-400 text-sm">مشتری راضی</p>
+      </div>
+      <div>
+        <p class="text-3xl font-bold text-white mb-1">+۳۰</p>
+        <p class="text-earth-400 text-sm">نوع محصول</p>
+      </div>
+      <div>
+        <p class="text-3xl font-bold text-white mb-1">+۵</p>
+        <p class="text-earth-400 text-sm">سال تجربه</p>
+      </div>
+      <div>
+        <p class="text-3xl font-bold text-white mb-1">۳۱</p>
+        <p class="text-earth-400 text-sm">استان پوشش‌داده‌شده</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CTA -->
+<section class="py-16 bg-white">
+  <div class="max-w-3xl mx-auto px-6 text-center">
+    <h2 class="text-2xl font-bold text-earth-800 mb-3">آماده همکاری هستیم</h2>
+    <p class="text-earth-500 mb-8 text-sm leading-relaxed">
+      برای مشاوره رایگان، سفارش عمده، یا هر سوالی با ما در تماس باشید.
+    </p>
+    <div class="flex items-center justify-center gap-4 flex-wrap">
+      <a href="{% url 'core:contact' %}"
+      class="inline-flex items-center gap-2 bg-earth-800 hover:bg-earth-700 text-white font-semibold px-7 py-3 rounded-xl transition">
+      <i data-lucide="mail" class="w-4 h-4"></i>
+      تماس با ما
+    </a>
+    <a href="{{ site.telegram_url }}" target="_blank"
+    class="inline-flex items-center gap-2 bg-[#2AABEE] hover:bg-[#1a9ad8] text-white font-semibold px-7 py-3 rounded-xl transition">
+    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
+    </svg>
+    تلگرام
+  </a>
+</div>
+</div>
+</section>
+
+{% endblock %}

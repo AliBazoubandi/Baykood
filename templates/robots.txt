@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /accounts/
+Disallow: /cart/
+Disallow: /checkout/
+
+Sitemap: https://{{ request.get_host }}/sitemap.xml

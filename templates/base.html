@@ -1,0 +1,245 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ site.site_name }}{% endblock %}</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="{% static 'css/output.css' %}">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  {% block extra_css %}{% endblock %}
+  
+  <style>
+    body { font-family: 'Vazirmatn', sans-serif; }
+    html, body { overflow-x: hidden; max-width: 100%; }
+    .nav-link {
+      position: relative;
+      padding-bottom: 2px;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      right: 0;
+      width: 0;
+      height: 2px;
+      background: #c8a87c;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+  </style>
+</head>
+
+<body class="bg-earth-50 text-earth-900 min-h-screen flex flex-col overflow-x-hidden">
+  
+  <!-- ── Navbar ── -->
+  <!-- ── Navbar ── -->
+  <nav class="bg-earth-900/95 backdrop-blur-sm text-earth-50 shadow-lg sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      
+      <div class="flex items-center justify-between">
+        
+        <!-- Logo -->
+        <a href="{% url 'core:home' %}" class="flex items-center gap-2 text-lg font-bold text-earth-100 hover:text-white transition">
+          <i data-lucide="tractor" class="w-6 h-6 shrink-0"></i>
+          <span>{{ site.site_name }}</span>
+        </a>
+        
+        <!-- Desktop nav links -->
+        <div class="hidden md:flex items-center gap-6 text-sm font-medium">
+          <a href="{% url 'core:home' %}" class="nav-link hover:text-earth-200 transition">خانه</a>
+          <a href="{% url 'shop:product_list' %}" class="nav-link hover:text-earth-200 transition">فروشگاه</a>
+          <a href="{% url 'blog:post_list' %}" class="nav-link hover:text-earth-200 transition">وبلاگ</a>
+          <a href="{% url 'core:about' %}" class="nav-link hover:text-earth-200 transition">درباره ما</a>
+          <a href="{% url 'core:contact' %}" class="nav-link hover:text-earth-200 transition">تماس</a>
+          
+          {% if user.is_authenticated %}
+          <a href="{% url 'accounts:profile' %}" class="nav-link hover:text-earth-200 transition">حساب من</a>
+          <a href="{% url 'accounts:logout' %}" class="nav-link hover:text-earth-200 transition">خروج</a>
+          {% else %}
+          <a href="{% url 'accounts:login' %}" class="bg-earth-600 hover:bg-earth-500 text-white px-4 py-1.5 rounded-lg transition font-medium">ورود</a>
+          {% endif %}
+        </div>
+        
+        <!-- Right side: cart + hamburger -->
+        <div class="flex items-center gap-3">
+          
+          <!-- Cart (always visible) -->
+          <a href="{% url 'shop:cart_detail' %}" class="relative hover:text-earth-200 transition">
+            <i data-lucide="shopping-basket" class="w-6 h-6"></i>
+            {% if cart_count %}
+            <span class="absolute -top-2 -left-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
+              {{ cart_count }}
+            </span>
+            {% endif %}
+          </a>
+          
+          <!-- Hamburger button (mobile only) -->
+          <button id="mobile-menu-btn"
+          class="md:hidden flex items-center justify-center w-9 h-9 rounded-lg hover:bg-earth-700 transition"
+          aria-label="منو">
+          <i data-lucide="menu" class="w-5 h-5" id="menu-icon-open"></i>
+          <i data-lucide="x" class="w-5 h-5 hidden" id="menu-icon-close"></i>
+        </button>
+        
+      </div>
+    </div>
+    
+    <!-- Mobile menu (hidden by default) -->
+    <div id="mobile-menu" class="hidden md:hidden mt-3 pb-3 border-t border-earth-700 pt-3">
+      <div class="flex flex-col gap-1 text-sm font-medium">
+        
+        <a href="{% url 'core:home' %}"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-earth-800 transition">
+        <i data-lucide="home" class="w-4 h-4 text-earth-400 shrink-0"></i>
+        خانه
+      </a>
+      <a href="{% url 'shop:product_list' %}"
+      class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-earth-800 transition">
+      <i data-lucide="store" class="w-4 h-4 text-earth-400 shrink-0"></i>
+      فروشگاه
+    </a>
+    <a href="{% url 'blog:post_list' %}"
+    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-earth-800 transition">
+    <i data-lucide="book-open" class="w-4 h-4 text-earth-400 shrink-0"></i>
+    وبلاگ
+  </a>
+  <a href="{% url 'core:about' %}"
+  class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-earth-800 transition">
+  <i data-lucide="sprout" class="w-4 h-4 text-earth-400 shrink-0"></i>
+  درباره ما
+</a>
+<a href="{% url 'core:contact' %}"
+class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-earth-800 transition">
+<i data-lucide="mail" class="w-4 h-4 text-earth-400 shrink-0"></i>
+تماس با ما
+</a>
+
+<div class="border-t border-earth-700 my-2"></div>
+
+{% if user.is_authenticated %}
+<a href="{% url 'accounts:profile' %}"
+class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-earth-800 transition">
+<i data-lucide="user" class="w-4 h-4 text-earth-400 shrink-0"></i>
+حساب من
+</a>
+<a href="{% url 'accounts:logout' %}"
+class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-earth-800 transition text-red-400">
+<i data-lucide="log-out" class="w-4 h-4 shrink-0"></i>
+خروج
+</a>
+{% else %}
+<a href="{% url 'accounts:login' %}"
+class="flex items-center justify-center gap-2 bg-earth-600 hover:bg-earth-500 text-white px-4 py-2.5 rounded-xl transition font-medium mt-1">
+<i data-lucide="log-in" class="w-4 h-4"></i>
+ورود به حساب
+</a>
+<a href="{% url 'accounts:register' %}"
+class="flex items-center justify-center gap-2 border border-earth-600 text-earth-200 px-4 py-2.5 rounded-xl transition font-medium">
+<i data-lucide="user-plus" class="w-4 h-4"></i>
+ثبت‌نام
+</a>
+{% endif %}
+
+</div>
+</div>
+
+</div>
+</nav>
+
+<!-- ── Flash messages ── -->
+{% if messages %}
+<div class="max-w-6xl mx-auto w-full px-6 mt-4 space-y-2">
+  {% for message in messages %}
+  <div class="px-4 py-3 rounded-lg text-sm font-medium
+          {% if message.tags == 'error' %}bg-red-100 text-red-800 border border-red-200
+          {% elif message.tags == 'success' %}bg-green-100 text-green-800 border border-green-200
+          {% else %}bg-earth-100 text-earth-800 border border-earth-200{% endif %}">
+  {{ message }}
+</div>
+{% endfor %}
+</div>
+{% endif %}
+
+<!-- ── Page content ── -->
+<main class="flex-1">
+  {% block content %}{% endblock %}
+</main>
+
+<!-- ── Footer ── -->
+<footer class="bg-earth-900 text-earth-300 mt-20 pt-12 pb-6">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+      
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="tractor" class="w-6 h-6"></i>
+          <h3 class="text-earth-100 font-bold text-lg">{{ site.site_name }}</h3>
+        </div>
+        <p class="leading-relaxed text-sm">{{ site.site_slogan }}</p>
+        <p class="leading-relaxed text-sm mt-2">فروش کودها، خاک‌های کشاورزی و محصولات زراعی با بهترین کیفیت.</p>
+      </div>
+      
+      <div>
+        <h3 class="text-earth-100 font-semibold mb-4">دسترسی سریع</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href="{% url 'core:home' %}" class="hover:text-earth-100 transition">خانه</a></li>
+          <li><a href="{% url 'shop:product_list' %}" class="hover:text-earth-100 transition">فروشگاه</a></li>
+          <li><a href="{% url 'blog:post_list' %}" class="hover:text-earth-100 transition">وبلاگ</a></li>
+          <li><a href="{% url 'core:about' %}" class="hover:text-earth-100 transition">درباره ما</a></li>
+          <li><a href="{% url 'core:contact' %}" class="hover:text-earth-100 transition">تماس با ما</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h3 class="text-earth-100 font-semibold mb-4">ارتباط با ما</h3>
+        <div class="space-y-3">
+          <a href="{{ site.telegram_url }}"
+          target="_blank"
+          class="inline-flex items-center gap-2 bg-[#2AABEE] hover:bg-[#1a9ad8] text-white px-4 py-2.5 rounded-lg transition text-sm font-medium">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
+          </svg>
+          تلگرام ما
+        </a>
+      </div>
+    </div>
+    
+  </div>
+  <div class="border-t border-earth-800 pt-6 text-center text-earth-600 text-xs">
+    © ۱۴۰۵ {{ site.site_name }} — تمامی حقوق محفوظ است
+  </div>
+</div>
+</footer>
+<script>lucide.createIcons();</script>
+<script>
+  const btn       = document.getElementById('mobile-menu-btn');
+  const menu      = document.getElementById('mobile-menu');
+  const iconOpen  = document.getElementById('menu-icon-open');
+  const iconClose = document.getElementById('menu-icon-close');
+  
+  btn.addEventListener('click', () => {
+    const isHidden = menu.classList.contains('hidden');
+    menu.classList.toggle('hidden', !isHidden);
+    iconOpen.classList.toggle('hidden', isHidden);
+    iconClose.classList.toggle('hidden', !isHidden);
+  });
+  
+  // Close menu when a link is clicked
+  menu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      iconOpen.classList.remove('hidden');
+      iconClose.classList.add('hidden');
+    });
+  });
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

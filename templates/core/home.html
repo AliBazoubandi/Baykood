@@ -1,0 +1,350 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}خانه | {{ site.site_name }}{% endblock %}
+
+{% block content %}
+
+<!-- ══════════════════════════════════════════
+  HERO
+  ══════════════════════════════════════════ -->
+  <section class="relative h-[92vh] min-h-[600px] flex items-center overflow-hidden">
+    <div class="absolute inset-0">
+      <img src="{% static 'images/hero.jpg' %}" alt="مزرعه کشاورزی"
+      class="w-full h-full object-cover object-center">
+      <div class="absolute inset-0 bg-gradient-to-l from-earth-900/90 via-earth-900/60 to-earth-900/10"></div>
+    </div>
+    
+    <!-- Hero content -->
+    <div class="relative z-10 max-w-6xl mx-auto px-4 w-full">
+      <div class="max-w-xl">
+        
+        <div class="inline-flex items-center gap-2 bg-earth-600/80 text-earth-100 text-xs font-medium px-3 py-1.5 rounded-full mb-5 backdrop-blur-sm">
+          <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse shrink-0"></span>
+          محصولات کشاورزی اورگانیک
+        </div>
+        
+        <h1 class="text-3xl md:text-5xl font-bold text-white leading-tight mb-3">
+          {{ site.site_name }}
+        </h1>
+        <h2 class="text-lg md:text-2xl font-light text-earth-200 mb-5">
+          {{ site.site_slogan }}
+        </h2>
+        <p class="text-earth-300 text-sm md:text-lg leading-relaxed mb-8 max-w-sm md:max-w-none">
+          بهترین کودها، خاک‌های باکیفیت و محصولات زراعی را مستقیم از طبیعت به دست بیاورید.
+        </p>
+        
+        <div class="flex items-center gap-3 flex-wrap">
+          <a href="{% url 'shop:product_list' %}"
+          class="bg-earth-600 hover:bg-earth-500 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:shadow-lg text-sm md:text-base">
+          مشاهده محصولات
+        </a>
+        <a href="{{ site.telegram_url }}" target="_blank"
+        class="border-2 border-earth-400 text-earth-200 hover:bg-earth-800/60 font-medium px-6 py-3 rounded-xl transition-all duration-300 backdrop-blur-sm text-sm md:text-base">
+        تماس با ما
+      </a>
+    </div>
+    
+  </div>
+</div>
+</div>
+
+<div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-earth-400 animate-bounce">
+  <i data-lucide="chevron-down" class="w-6 h-6"></i>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  FEATURES STRIP
+  ══════════════════════════════════════════ -->
+  <section class="bg-earth-800 text-earth-100 py-5">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center text-xs md:text-sm font-medium">
+        <div class="flex items-center justify-center gap-1.5 py-1">
+          <i data-lucide="truck" class="w-4 h-4 text-earth-300 shrink-0"></i>
+          <span>ارسال سریع</span>
+        </div>
+        <div class="flex items-center justify-center gap-1.5 py-1">
+          <i data-lucide="leaf" class="w-4 h-4 text-green-400 shrink-0"></i>
+          <span>۱۰۰٪ طبیعی</span>
+        </div>
+        <div class="flex items-center justify-center gap-1.5 py-1">
+          <i data-lucide="shield-check" class="w-4 h-4 text-earth-300 shrink-0"></i>
+          <span>ضمانت کیفیت</span>
+        </div>
+        <div class="flex items-center justify-center gap-1.5 py-1">
+          <i data-lucide="headset" class="w-4 h-4 text-earth-300 shrink-0"></i>
+          <span>پشتیبانی ۲۴ ساعته</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  
+  <!-- ══════════════════════════════════════════
+    CATEGORIES
+    ══════════════════════════════════════════ -->
+    <section class="py-20 bg-earth-50">
+      <div class="max-w-6xl mx-auto px-6">
+        
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-earth-800 mb-3">دسته‌بندی محصولات</h2>
+          <p class="text-earth-500">آنچه به کشاورزی شما نیاز است</p>
+          <div class="w-16 h-1 bg-earth-400 mx-auto mt-4 rounded-full"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Fertilizers -->
+          <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-earth-100">
+            <div class="h-44 bg-amber-800 flex items-center justify-center">
+              <i data-lucide="flask-conical" class="w-20 h-20 text-amber-200 opacity-80"></i>
+            </div>
+            <div class="p-6">
+              <h3 class="font-bold text-earth-800 text-lg mb-2">کودهای کشاورزی</h3>
+              <p class="text-earth-500 text-sm leading-relaxed">انواع کودهای آلی و شیمیایی برای افزایش بازدهی خاک و رشد بهتر گیاهان</p>
+              <a href="{% url 'shop:product_list' %}"
+              class="inline-flex items-center gap-1 text-earth-600 font-medium text-sm mt-4 hover:text-earth-800 transition group-hover:gap-2">
+              مشاهده محصولات
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Soil -->
+        <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-earth-100">
+          <div class="h-44 bg-earth-700 flex items-center justify-center">
+            <i data-lucide="mountain" class="w-20 h-20 text-earth-300 opacity-80"></i>
+          </div>
+          <div class="p-6">
+            <h3 class="font-bold text-earth-800 text-lg mb-2">خاک و بستر کاشت</h3>
+            <p class="text-earth-500 text-sm leading-relaxed">خاک‌های مرغوب و بسترهای کاشت آماده برای انواع گیاهان زراعی و باغی</p>
+            <a href="{% url 'shop:product_list' %}"
+            class="inline-flex items-center gap-1 text-earth-600 font-medium text-sm mt-4 hover:text-earth-800 transition group-hover:gap-2">
+            مشاهده محصولات
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Irrigation -->
+      <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-earth-100">
+        <div class="h-44 bg-green-800 flex items-center justify-center">
+          <i data-lucide="droplets" class="w-20 h-20 text-green-200 opacity-80"></i>
+        </div>
+        <div class="p-6">
+          <h3 class="font-bold text-earth-800 text-lg mb-2">محلول‌های آبیاری</h3>
+          <p class="text-earth-500 text-sm leading-relaxed">محلول‌های تغذیه‌ای و تقویتی برای سیستم‌های آبیاری قطره‌ای و هیدروپونیک</p>
+          <a href="{% url 'shop:product_list' %}"
+          class="inline-flex items-center gap-1 text-earth-600 font-medium text-sm mt-4 hover:text-earth-800 transition group-hover:gap-2">
+          مشاهده محصولات
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+    
+  </div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  FEATURED PRODUCTS (placeholder)
+  ══════════════════════════════════════════ -->
+  <section class="py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      
+      <div class="flex items-center justify-between mb-10">
+        <div>
+          <h2 class="text-3xl font-bold text-earth-800 mb-1">محصولات ویژه</h2>
+          <p class="text-earth-500 text-sm">پرفروش‌ترین محصولات ما</p>
+        </div>
+        <a href="{% url 'shop:product_list' %}"
+        class="inline-flex items-center gap-2 text-earth-600 hover:text-earth-800 font-medium text-sm border border-earth-300 px-5 py-2 rounded-lg hover:border-earth-500 transition">
+        <span>همه محصولات</span>
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+      </a>
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {% if featured_products %}
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {% for product in featured_products %}
+        <div class="group bg-white rounded-2xl overflow-hidden border border-earth-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <a href="{{ product.get_absolute_url }}" class="block h-52 overflow-hidden">
+            {% if product.cover_image %}
+            <img src="{{ product.cover_image.url }}" alt="{{ product.name }}"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            {% else %}
+            <div class="w-full h-full bg-earth-100 flex items-center justify-center">
+              <i data-lucide="sprout" class="w-12 h-12 text-earth-300"></i>
+            </div>
+            {% endif %}
+          </a>
+          <div class="p-4">
+            <h3 class="font-bold text-earth-800 text-sm mb-2 leading-snug">{{ product.name }}</h3>
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-earth-600 text-sm">{{ product.formatted_price }}</span>
+              <a href="{{ product.get_absolute_url }}"
+              class="text-xs text-earth-500 hover:text-earth-700 flex items-center gap-1 transition">
+              بیشتر <i data-lucide="arrow-left" class="w-3 h-3"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-center text-earth-400 text-sm py-12 flex items-center justify-center gap-2">
+      <i data-lucide="info" class="w-4 h-4"></i>
+      محصولات پس از اضافه شدن از طریق پنل مدیریت نمایش داده می‌شوند
+    </p>
+    {% endif %}
+  </div>
+  
+  <p class="text-center text-earth-400 text-sm mt-6 flex items-center justify-center gap-2">
+    <i data-lucide="info" class="w-4 h-4"></i>
+    محصولات پس از اضافه شدن از طریق پنل مدیریت نمایش داده می‌شوند
+  </p>
+  
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  BLOG TEASER
+  ══════════════════════════════════════════ -->
+  <section class="py-20 bg-earth-50">
+    <div class="max-w-6xl mx-auto px-6">
+      
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-earth-800 mb-3">از وبلاگ ما</h2>
+        <p class="text-earth-500">آموزش، تجربه و اخبار کشاورزی</p>
+        <div class="w-16 h-1 bg-earth-400 mx-auto mt-4 rounded-full"></div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {% if recent_posts %}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {% for post in recent_posts %}
+          <article class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-earth-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <a href="{{ post.get_absolute_url }}" class="block h-44 overflow-hidden relative">
+              {% if post.cover_image %}
+              <img src="{{ post.cover_image.url }}" alt="{{ post.title }}"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              {% else %}
+              <div class="w-full h-full bg-gradient-to-br from-earth-200 to-earth-300 flex items-center justify-center">
+                <i data-lucide="newspaper" class="w-10 h-10 text-earth-400"></i>
+              </div>
+              {% endif %}
+              {% if post.video_url %}
+              <div class="absolute top-3 left-3 bg-black/60 text-white rounded-full px-2 py-0.5 text-xs flex items-center gap-1">
+                <i data-lucide="play-circle" class="w-3 h-3"></i> ویدیو
+              </div>
+              {% endif %}
+            </a>
+            <div class="p-5">
+              <a href="{{ post.get_absolute_url }}">
+                <h3 class="font-bold text-earth-800 mb-2 leading-snug hover:text-earth-600 transition">
+                  {{ post.title|truncatewords:8 }}
+                </h3>
+              </a>
+              <p class="text-earth-500 text-sm line-clamp-2">{{ post.body|truncatewords:15 }}</p>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-center text-earth-400 text-sm py-12 flex items-center justify-center gap-2">
+          <i data-lucide="info" class="w-4 h-4"></i>
+          مقالات پس از انتشار در پنل مدیریت نمایش داده می‌شوند
+        </p>
+        {% endif %}
+      </div>
+      
+      <div class="text-center mt-10">
+        <a href="{% url 'blog:post_list' %}"
+        class="inline-flex items-center gap-2 bg-earth-800 hover:bg-earth-700 text-white font-medium px-8 py-3 rounded-xl transition">
+        <i data-lucide="book-open" class="w-4 h-4"></i>
+        مشاهده همه مقالات
+      </a>
+    </div>
+    
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  WHY US
+  ══════════════════════════════════════════ -->
+  <section class="py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      
+      <div class="text-center mb-14">
+        <h2 class="text-3xl font-bold text-earth-800 mb-3">چرا کشاورزی سبز؟</h2>
+        <div class="w-16 h-1 bg-earth-400 mx-auto mt-4 rounded-full"></div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+        
+        <div class="flex flex-col items-center gap-4">
+          <div class="w-16 h-16 rounded-2xl bg-earth-100 flex items-center justify-center">
+            <i data-lucide="tractor" class="w-8 h-8 text-earth-600"></i>
+          </div>
+          <h3 class="font-bold text-earth-800">تجربه کشاورزی</h3>
+          <p class="text-earth-500 text-sm leading-relaxed">سال‌ها تجربه در تأمین نهاده‌های کشاورزی باکیفیت</p>
+        </div>
+        
+        <div class="flex flex-col items-center gap-4">
+          <div class="w-16 h-16 rounded-2xl bg-green-50 flex items-center justify-center">
+            <i data-lucide="wheat" class="w-8 h-8 text-green-700"></i>
+          </div>
+          <h3 class="font-bold text-earth-800">محصول طبیعی</h3>
+          <p class="text-earth-500 text-sm leading-relaxed">تمام محصولات از منابع طبیعی و قابل اطمینان تأمین می‌شوند</p>
+        </div>
+        
+        <div class="flex flex-col items-center gap-4">
+          <div class="w-16 h-16 rounded-2xl bg-amber-50 flex items-center justify-center">
+            <i data-lucide="package-check" class="w-8 h-8 text-amber-700"></i>
+          </div>
+          <h3 class="font-bold text-earth-800">بسته‌بندی مناسب</h3>
+          <p class="text-earth-500 text-sm leading-relaxed">بسته‌بندی حرفه‌ای با حفظ کیفیت محصول تا رسیدن به دست شما</p>
+        </div>
+        
+        <div class="flex flex-col items-center gap-4">
+          <div class="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center">
+            <i data-lucide="messages-square" class="w-8 h-8 text-blue-700"></i>
+          </div>
+          <h3 class="font-bold text-earth-800">مشاوره رایگان</h3>
+          <p class="text-earth-500 text-sm leading-relaxed">کارشناسان ما آماده پاسخگویی به سؤالات شما هستند</p>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+  
+  
+  <!-- ══════════════════════════════════════════
+    TELEGRAM CTA
+    ══════════════════════════════════════════ -->
+    <section class="bg-earth-800 py-16">
+      <div class="max-w-3xl mx-auto px-6 text-center">
+        <div class="w-16 h-16 rounded-2xl bg-earth-700 flex items-center justify-center mx-auto mb-6">
+          <i data-lucide="sprout" class="w-8 h-8 text-green-400"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-white mb-3">سوال دارید؟ با ما در تماس باشید</h2>
+        <p class="text-earth-300 mb-8 leading-relaxed">
+          برای مشاوره رایگان، راهنمایی در انتخاب محصول یا پیگیری سفارش از طریق تلگرام پیام دهید.
+        </p>
+        <a href="{{ site.telegram_url }}" target="_blank"
+        class="inline-flex items-center gap-3 bg-[#2AABEE] hover:bg-[#1a9ad8] text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 text-base">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
+        </svg>
+        گفتگو در تلگرام
+      </a>
+    </div>
+  </section>
+  
+  {% endblock %}

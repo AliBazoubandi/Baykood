@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+.Python
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+media/
+
+# Environment variables
+.env
+
+# Node / Tailwind
+node_modules/
+npm-debug.log*
+
+# Compiled Tailwind output (regenerated on each machine)
+static/css/output.css
+
+# Static files collected by Django
+staticfiles/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Coverage / testing
+htmlcov/
+.coverage

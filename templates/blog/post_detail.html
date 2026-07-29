@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }} | {{ site.site_name }}{% endblock %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto px-6 py-12">
+
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-2 text-sm text-earth-400 mb-8">
+    <a href="{% url 'core:home' %}" class="hover:text-earth-600 transition">خانه</a>
+    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+    <a href="{% url 'blog:post_list' %}" class="hover:text-earth-600 transition">وبلاگ</a>
+    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+    <span class="text-earth-700 font-medium">{{ post.title|truncatewords:6 }}</span>
+  </nav>
+
+  <!-- Tags -->
+  {% if post.tags.all %}
+    <div class="flex flex-wrap gap-2 mb-4">
+      {% for tag in post.tags.all %}
+        <a href="{{ tag.get_absolute_url }}"
+           class="text-xs bg-earth-100 text-earth-600 hover:bg-earth-200 px-3 py-1.5 rounded-full transition font-medium">
+          # {{ tag.name }}
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Title -->
+  <h1 class="text-3xl font-bold text-earth-900 leading-snug mb-4">{{ post.title }}</h1>
+
+  <div class="flex items-center gap-3 text-earth-400 text-sm mb-8">
+    <i data-lucide="calendar" class="w-4 h-4"></i>
+    {{ post.published_at|date:"Y/m/d" }}
+  </div>
+
+  <!-- Cover image -->
+  {% if post.cover_image %}
+    <div class="rounded-2xl overflow-hidden mb-10 h-72 md:h-96">
+      <img src="{{ post.cover_image.url }}" alt="{{ post.title }}"
+           class="w-full h-full object-cover">
+    </div>
+  {% endif %}
+
+  <!-- Body -->
+  <div class="prose-persian text-earth-800 leading-9 text-base mb-12">
+    {{ post.body|linebreaks }}
+  </div>
+
+  <!-- Video embed -->
+  {% if embed_url %}
+    <div class="mb-12">
+      <h2 class="text-xl font-bold text-earth-800 mb-4 flex items-center gap-2">
+        <i data-lucide="play-circle" class="w-5 h-5 text-earth-500"></i>
+        ویدیو مرتبط
+      </h2>
+      <div class="rounded-2xl overflow-hidden aspect-video bg-black shadow-lg">
+        <iframe
+          src="{{ embed_url }}"
+          class="w-full h-full"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+  {% elif post.video_url %}
+    <!-- Fallback: just a link if embed conversion didn't work -->
+    <div class="mb-12 bg-earth-50 border border-earth-200 rounded-2xl p-6 flex items-center gap-4">
+      <i data-lucide="external-link" class="w-6 h-6 text-earth-500 shrink-0"></i>
+      <div>
+        <p class="font-medium text-earth-700 mb-1">ویدیو مرتبط</p>
+        <a href="{{ post.video_url }}" target="_blank"
+           class="text-earth-500 hover:text-earth-700 text-sm transition underline break-all">
+          {{ post.video_url }}
+        </a>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Telegram CTA -->
+  <div class="bg-earth-800 rounded-2xl p-8 text-center mb-12">
+    <i data-lucide="message-circle" class="w-10 h-10 text-earth-400 mx-auto mb-3"></i>
+    <h3 class="text-white font-bold text-lg mb-2">سوال دارید؟</h3>
+    <p class="text-earth-300 text-sm mb-5">برای راهنمایی بیشتر در تلگرام با ما در تماس باشید</p>
+    <a href="{{ site.telegram_url }}" target="_blank"
+       class="inline-flex items-center gap-2 bg-[#2AABEE] hover:bg-[#1a9ad8] text-white font-semibold px-6 py-3 rounded-xl transition">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
+      </svg>
+      گفتگو در تلگرام
+    </a>
+  </div>
+
+  <!-- Related posts -->
+  {% if related %}
+    <div>
+      <h2 class="text-xl font-bold text-earth-800 mb-6 flex items-center gap-2">
+        <i data-lucide="layers" class="w-5 h-5 text-earth-500"></i>
+        مقالات مرتبط
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {% for p in related %}
+          <a href="{{ p.get_absolute_url }}"
+             class="group bg-white rounded-2xl overflow-hidden border border-earth-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+            <div class="h-36 overflow-hidden">
+              {% if p.cover_image %}
+                <img src="{{ p.cover_image.url }}" alt="{{ p.title }}"
+                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              {% else %}
+                <div class="w-full h-full bg-earth-100 flex items-center justify-center">
+                  <i data-lucide="newspaper" class="w-8 h-8 text-earth-300"></i>
+                </div>
+              {% endif %}
+            </div>
+            <div class="p-4">
+              <h3 class="font-bold text-earth-800 text-sm leading-snug">{{ p.title|truncatewords:8 }}</h3>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+
+{% endblock %}

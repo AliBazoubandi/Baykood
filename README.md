@@ -1,4 +1,4 @@
-# 🌱 AgriShop — فروشگاه کشاورزی آنلاین
+# Baykood — فروشگاه کشاورزی آنلاین بایکود
 
 A full-featured Persian (RTL) agriculture e-commerce website built with Django and Tailwind CSS.
 
@@ -52,7 +52,7 @@ Make sure you have these installed:
 ### 1 — Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/agrishop.git
+git clone https://github.com/AliBazoubandi/Baykood
 cd agrishop
 ```
 
@@ -132,7 +132,7 @@ Admin panel: `http://127.0.0.1:8000/admin/`
 ## 📁 Project Structure
 
 ```bash
-agrishop/
+Baykood-main/
 ├── agrishop/               # Django project config
 │   ├── settings.py
 │   ├── urls.py

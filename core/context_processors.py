@@ -1,11 +1,12 @@
 SITE_CONFIG = {
-    'site_name': 'کشاورزی سبز',
-    'site_name_en': 'Agrishop',
+    'site_name': 'بایکود',
+    'site_name_en': 'Baykood',
     'site_slogan': 'طبیعت در خدمت شما',
-    'telegram_url': 'https://t.me/YOUR_TELEGRAM_USERNAME',
-    'whatsapp_number': '',  # add later if needed
-    'instagram_url': '',    # add later if needed
-    'youtube_url': '',      # add later if needed
+    'phone_number': '09123456789',  # will change this later its just for testing
+    'telegram_url': 'https://t.me/erling',  # will change this later its just for testing
+    'whatsapp_number': '09123456789',  # will change this later its just for testing
+    'instagram_url': 'https://www.instagram.com/erling',    # will change this later its just for testing
+    'youtube_url': 'https://www.youtube.com/@Fireship',      # will change this later its just for testing
 }
 
 def site_config(request):

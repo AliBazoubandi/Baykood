@@ -29,6 +29,12 @@
   <!-- Canonical URL -->
   <link rel="canonical" href="{{ request.build_absolute_uri }}">
 
+  <!-- Favicons -->
+  <link rel="icon" type="image/x-icon" href="{% static 'favicon/favicon.ico' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+
   <link rel="stylesheet" href="{% static 'css/output.css' %}">
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -49,6 +55,13 @@
       transition: width 0.3s ease;
     }
     .nav-link:hover::after { width: 100%; }
+    @keyframes pulse-slow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(42, 171, 238, 0.5); }
+      50%      { box-shadow: 0 0 0 10px rgba(42, 171, 238, 0); }
+    }
+    .animate-pulse-slow {
+      animation: pulse-slow 2.5s infinite;
+    }
   </style>
 </head>
 
@@ -268,6 +281,17 @@ aria-label="بازگشت به بالا"
 class="fixed bottom-6 right-6 z-50 w-11 h-11 bg-earth-700 hover:bg-earth-600 text-white rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
 <i data-lucide="chevron-up" class="w-5 h-5"></i>
 </button>
+
+<!-- ── Floating Telegram button ── -->
+{% if site.telegram_url %}
+<a href="{{ site.telegram_url }}" target="_blank"
+   aria-label="گفتگو در تلگرام"
+   class="fixed bottom-20 right-6 z-50 w-11 h-11 bg-[#2AABEE] hover:bg-[#1a9ad8] text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 animate-pulse-slow">
+  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
+  </svg>
+</a>
+{% endif %}
 
 <script>lucide.createIcons();</script>
 

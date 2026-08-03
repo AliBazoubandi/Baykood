@@ -24,9 +24,6 @@ media/
 node_modules/
 npm-debug.log*
 
-# Compiled Tailwind output (regenerated on each machine)
-static/css/output.css
-
 # Static files collected by Django
 staticfiles/
 

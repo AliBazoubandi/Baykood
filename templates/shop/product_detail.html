@@ -2,6 +2,14 @@
 {% load static %}
 
 {% block title %}{{ product.name }} | {{ site.site_name }}{% endblock %}
+{% block meta_description %}{{ product.name }} — {{ product.description|truncatewords:20|striptags }}{% endblock %}
+{% block og_title %}{{ product.name }} | {{ site.site_name }}{% endblock %}
+{% block og_description %}{{ product.description|truncatewords:25|striptags }}{% endblock %}
+{% block og_type %}product{% endblock %}
+{% if product.cover_image %}
+  {% block og_image %}{{ request.scheme }}://{{ request.get_host }}{{ product.cover_image.url }}{% endblock %}
+  {% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{{ product.cover_image.url }}{% endblock %}
+{% endif %}
 
 {% block content %}
 

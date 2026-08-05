@@ -4,10 +4,57 @@ from django.urls import reverse
 
 
 class Category(models.Model):
+    ICON_CHOICES = [
+        ('droplets', 'قطره آب — محلول‌های آبیاری'),
+        ('mountain', 'کوه — خاک و بستر کاشت'),
+        ('flask-conical', 'فلاسک — کودهای شیمیایی'),
+        ('leaf', 'برگ — محصولات طبیعی'),
+        ('wheat', 'گندم — غلات'),
+        ('sprout', 'جوانه — بذر و نهال'),
+        ('trees', 'درخت — درختان و باغبانی'),
+        ('flower-2', 'گل — گل و گیاه زینتی'),
+        ('bug', 'حشره — سموم و آفت‌کش'),
+        ('shovel', 'بیل — ابزار کشاورزی'),
+        ('sun', 'خورشید — گلخانه'),
+        ('cloud-rain', 'باران — تجهیزات آبیاری'),
+    ]
+
+    COLOR_CHOICES = [
+        ('green',  'سبز'),
+        ('brown',  'قهوه‌ای'),
+        ('orange', 'نارنجی'),
+        ('blue',   'آبی'),
+        ('amber',  'کهربایی'),
+        ('teal',   'سبزآبی'),
+    ]
+
     name        = models.CharField(max_length=200, verbose_name='نام دسته‌بندی')
     slug        = models.SlugField(max_length=200, unique=True, allow_unicode=True)
     description = models.TextField(blank=True, verbose_name='توضیحات')
+    short_description = models.CharField(
+        max_length=150, blank=True,
+        verbose_name='توضیح کوتاه',
+        help_text='برای نمایش در کارت دسته‌بندی صفحه اصلی'
+    )
     image       = models.ImageField(upload_to='categories/', blank=True, verbose_name='تصویر')
+
+    icon        = models.CharField(
+        max_length=50, choices=ICON_CHOICES,
+        default='sprout', verbose_name='آیکون (Lucide)',
+        help_text='در صورت آپلود آیکون سفارشی، این گزینه نادیده گرفته می‌شود'
+    )
+    icon_image  = models.ImageField(
+        upload_to='categories/icons/', blank=True, null=True,
+        verbose_name='آیکون سفارشی',
+        help_text='فایل PNG یا SVG آیکون دلخواه (اولویت با این فیلد است)'
+    )
+
+    color       = models.CharField(
+        max_length=20, choices=COLOR_CHOICES,
+        default='green', verbose_name='رنگ کارت'
+    )
+    show_on_homepage = models.BooleanField(default=True, verbose_name='نمایش در صفحه اصلی')
+    order       = models.PositiveIntegerField(default=0, verbose_name='ترتیب نمایش')
     parent      = models.ForeignKey(
         'self', on_delete=models.SET_NULL,
         null=True, blank=True,
@@ -19,7 +66,7 @@ class Category(models.Model):
     class Meta:
         verbose_name        = 'دسته‌بندی'
         verbose_name_plural = 'دسته‌بندی‌ها'
-        ordering            = ['name']
+        ordering            = ['order', 'name']
 
     def __str__(self):
         return self.name
@@ -70,6 +117,11 @@ class Product(models.Model):
 
     def formatted_price(self):
         return f'{self.price:,} تومان'
+    
+    LOW_STOCK_THRESHOLD = 5
+
+    def is_low_stock(self):
+        return 0 < self.stock <= self.LOW_STOCK_THRESHOLD
 
 
 class ProductImage(models.Model):

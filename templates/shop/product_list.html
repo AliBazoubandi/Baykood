@@ -82,9 +82,16 @@
         {% endif %}
         
         {% if product.is_featured %}
-        <span class="absolute top-3 right-3 bg-earth-700 text-earth-100 text-xs font-bold px-3 py-1 rounded-full">
-          ویژه
-        </span>
+          <span class="absolute top-3 right-3 bg-earth-700 text-earth-100 text-xs font-bold px-3 py-1 rounded-full">
+            ویژه
+          </span>
+        {% endif %}
+
+        {% if product.is_low_stock %}
+          <span class="absolute top-3 left-3 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+            <i data-lucide="alert-triangle" class="w-3 h-3"></i>
+            فقط {{ product.stock }} عدد باقی‌مانده
+          </span>
         {% endif %}
         
         {% if product.stock == 0 %}

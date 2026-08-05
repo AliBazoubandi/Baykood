@@ -90,12 +90,17 @@
       </div>
       <div class="flex items-center gap-2 mt-3 text-sm">
         {% if product.stock > 0 %}
-        <i data-lucide="circle-check" class="w-4 h-4 text-green-600"></i>
-        <span class="text-green-700 font-medium">موجود در انبار</span>
-        <span class="text-earth-400 mr-auto">{{ product.stock }} عدد باقی‌مانده</span>
+          {% if product.is_low_stock %}
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-500"></i>
+            <span class="text-amber-600 font-medium">فقط {{ product.stock }} عدد باقی‌مانده — عجله کنید!</span>
+          {% else %}
+            <i data-lucide="circle-check" class="w-4 h-4 text-green-600"></i>
+            <span class="text-green-700 font-medium">موجود در انبار</span>
+            <span class="text-earth-400 mr-auto">{{ product.stock }} عدد باقی‌مانده</span>
+          {% endif %}
         {% else %}
-        <i data-lucide="circle-x" class="w-4 h-4 text-red-500"></i>
-        <span class="text-red-600 font-medium">ناموجود</span>
+          <i data-lucide="circle-x" class="w-4 h-4 text-red-500"></i>
+          <span class="text-red-600 font-medium">ناموجود</span>
         {% endif %}
       </div>
     </div>

@@ -7,6 +7,9 @@ SITE_CONFIG = {
     'whatsapp_number': '09123456789',  # will change this later its just for testing
     'instagram_url': 'https://www.instagram.com/erling',    # will change this later its just for testing
     'youtube_url': 'https://www.youtube.com/@Fireship',      # will change this later its just for testing
+    'rubika_url': 'https://rubika.ir/DiaperTestMan',  # will change this later its just for testing
+    'bale_url': 'https://ble.ir/DiaperTestMan',  # will change this later its just for testing
+    'soroush_url': 'https://splus.ir/DiaperTestMan',  # will change this later its just for testing
 }
 
 def site_config(request):

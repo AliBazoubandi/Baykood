@@ -21,15 +21,34 @@ class ProductImageInline(admin.TabularInline):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display  = ['name', 'parent', 'product_count', 'created_at']
-    list_filter   = ['parent']
+    list_display  = ['name', 'icon_preview', 'color', 'show_on_homepage', 'order', 'parent', 'product_count']
+    list_filter   = ['show_on_homepage', 'color', 'parent']
+    list_editable = ['show_on_homepage', 'order']
     search_fields = ['name']
     prepopulated_fields = {'slug': ('name',)}
-    ordering = ['name']
+    ordering = ['order', 'name']
+
+    fieldsets = (
+        ('اطلاعات اصلی', {
+            'fields': ('name', 'slug', 'description', 'short_description')
+        }),
+        ('نمایش در صفحه اصلی', {
+            'fields': ('icon', 'icon_image', 'color', 'image', 'show_on_homepage', 'order')
+        }),
+        ('دسته‌بندی والد', {
+            'fields': ('parent',)
+        }),
+    )
 
     def product_count(self, obj):
         return obj.products.count()
     product_count.short_description = 'تعداد محصولات'
+
+    def icon_preview(self, obj):
+        if obj.icon_image:
+            return format_html('<img src="{}" style="height:28px;" />', obj.icon_image.url)
+        return f'lucide: {obj.icon}'
+    icon_preview.short_description = 'آیکون'
 
 
 @admin.register(Product)

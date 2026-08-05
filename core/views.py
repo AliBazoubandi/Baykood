@@ -1,18 +1,19 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from shop.models import Product
+from shop.models import Product, Category
 from blog.models import Post
 from .forms import ContactForm
 
 
 def home(request):
-    featured_products = Product.objects.filter(
-        is_available=True, is_featured=True
-    )[:4]
-    recent_posts = Post.objects.filter(is_published=True)[:3]
+    featured_products  = Product.objects.filter(is_available=True, is_featured=True)[:4]
+    featured_categories = Category.objects.filter(show_on_homepage=True)
+    recent_posts        = Post.objects.filter(is_published=True)[:3]
+
     return render(request, 'core/home.html', {
-        'featured_products': featured_products,
-        'recent_posts':      recent_posts,
+        'featured_products':   featured_products,
+        'featured_categories': featured_categories,
+        'recent_posts':        recent_posts,
     })
 
 

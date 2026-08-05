@@ -76,7 +76,7 @@
         
         <!-- Logo -->
         <a href="{% url 'core:home' %}" class="flex items-center gap-2 text-lg font-bold text-earth-100 hover:text-white transition">
-          <i data-lucide="tractor" class="w-6 h-6 shrink-0"></i>
+          <img src="{% static 'favicon/web-app-manifest-512x512.png' %}" alt="{{ site.site_name }}" class="w-8 h-8 shrink-0 rounded-md">
           <span>{{ site.site_name }}</span>
         </a>
         
@@ -236,8 +236,8 @@ class="flex items-center justify-center gap-2 border border-earth-600 text-earth
             
             <div>
                 <div class="flex items-center gap-2 mb-4">
-                    <i data-lucide="tractor" class="w-6 h-6"></i>
-                    <h3 class="text-earth-100 font-bold text-lg">{{ site.site_name }}</h3>
+                  <img src="{% static 'favicon/web-app-manifest-512x512.png' %}" alt="{{ site.site_name }}" class="w-7 h-7 rounded-md">
+                  <h3 class="text-earth-100 font-bold text-lg">{{ site.site_name }}</h3>
                 </div>
                 <p class="leading-relaxed text-sm">{{ site.site_slogan }}</p>
                 <p class="leading-relaxed text-sm mt-2">فروش کودها، خاک‌های کشاورزی و محصولات زراعی با بهترین کیفیت.</p>

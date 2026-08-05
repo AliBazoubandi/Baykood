@@ -96,6 +96,7 @@ class Product(models.Model):
     is_featured  = models.BooleanField(default=False, verbose_name='محصول ویژه')
     weight      = models.CharField(max_length=50, blank=True, verbose_name='وزن / حجم')
     cover_image = models.ImageField(upload_to='products/', verbose_name='تصویر اصلی')
+    video_url = models.URLField(blank=True, verbose_name='لینک ویدیوی معرفی (YouTube / Instagram)')
     created_at  = models.DateTimeField(auto_now_add=True)
     updated_at  = models.DateTimeField(auto_now=True)
 
@@ -122,6 +123,29 @@ class Product(models.Model):
 
     def is_low_stock(self):
         return 0 < self.stock <= self.LOW_STOCK_THRESHOLD
+    
+    def get_embed_url(self):
+        url = self.video_url
+        if not url:
+            return None
+
+        if 'youtu.be/' in url:
+            video_id = url.split('youtu.be/')[-1].split('?')[0]
+            return f'https://www.youtube.com/embed/{video_id}'
+        if 'youtube.com/watch' in url:
+            from urllib.parse import urlparse, parse_qs
+            parsed = urlparse(url)
+            video_id = parse_qs(parsed.query).get('v', [None])[0]
+            if video_id:
+                return f'https://www.youtube.com/embed/{video_id}'
+        if 'youtube.com/shorts/' in url:
+            video_id = url.split('youtube.com/shorts/')[-1].split('?')[0]
+            return f'https://www.youtube.com/embed/{video_id}'
+        if 'instagram.com/reel/' in url or 'instagram.com/p/' in url:
+            clean = url.split('?')[0].rstrip('/')
+            return f'{clean}/embed'
+
+        return None
 
 
 class ProductImage(models.Model):

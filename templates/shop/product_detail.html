@@ -33,33 +33,69 @@
     
     <!-- ── Images ── -->
     <div>
-      <!-- Main image -->
-      <div class="rounded-2xl overflow-hidden bg-earth-100 mb-4 h-96">
+      <!-- Main image with zoom on hover -->
+      <div id="zoom-container"
+          class="relative rounded-2xl overflow-hidden bg-earth-100 mb-4 h-96 cursor-zoom-in group"
+          onclick="openLightbox(currentImageIndex)">
         {% if product.cover_image %}
-        <img id="main-image" src="{{ product.cover_image.url }}" alt="{{ product.name }}"
-        class="w-full h-full object-cover">
+          <img id="main-image" src="{{ product.cover_image.url }}" alt="{{ product.name }}"
+              class="w-full h-full object-cover transition-transform duration-200"
+              id="zoom-image">
         {% else %}
-        <div class="w-full h-full flex items-center justify-center">
-          <i data-lucide="image" class="w-20 h-20 text-earth-300"></i>
-        </div>
+          <div class="w-full h-full flex items-center justify-center">
+            <i data-lucide="image" class="w-20 h-20 text-earth-300"></i>
+          </div>
         {% endif %}
+
+        <!-- Zoom hint icon -->
+        <div class="absolute bottom-3 left-3 bg-black/50 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          <i data-lucide="zoom-in" class="w-4 h-4"></i>
+        </div>
       </div>
-      
+
       <!-- Thumbnail gallery -->
-      {% if gallery_images %}
-      <div class="flex gap-3 overflow-x-auto pb-2">
+      <div class="flex gap-3 overflow-x-auto pb-2" id="thumbnail-row">
         {% if product.cover_image %}
-        <img src="{{ product.cover_image.url }}" alt="{{ product.name }}"
-        onclick="document.getElementById('main-image').src = this.src"
-        class="w-20 h-20 object-cover rounded-xl cursor-pointer border-2 border-earth-400 shrink-0 hover:opacity-80 transition">
+          <img src="{{ product.cover_image.url }}" alt="{{ product.name }}"
+              onclick="event.stopPropagation(); setActiveImage(0)"
+              data-index="0"
+              class="thumbnail-img w-20 h-20 object-cover rounded-xl cursor-pointer border-2 border-earth-400 shrink-0 hover:opacity-80 transition">
         {% endif %}
         {% for img in gallery_images %}
-        <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.name }}"
-        onclick="document.getElementById('main-image').src = this.src"
-        class="w-20 h-20 object-cover rounded-xl cursor-pointer border-2 border-transparent hover:border-earth-400 shrink-0 transition">
+          <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.name }}"
+              onclick="event.stopPropagation(); setActiveImage({{ forloop.counter }})"
+              data-index="{{ forloop.counter }}"
+              class="thumbnail-img w-20 h-20 object-cover rounded-xl cursor-pointer border-2 border-transparent hover:border-earth-400 shrink-0 transition">
         {% endfor %}
       </div>
+
+      <!-- Video (if provided) -->
+      {% if embed_url %}
+        <div class="mt-6">
+          <h3 class="font-bold text-earth-800 mb-3 flex items-center gap-2 text-sm">
+            <i data-lucide="play-circle" class="w-4 h-4 text-earth-500"></i>
+            ویدیوی معرفی محصول
+          </h3>
+          <div class="rounded-2xl overflow-hidden aspect-video bg-black shadow-lg">
+            <iframe
+              src="{{ embed_url }}"
+              class="w-full h-full"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+      {% elif product.video_url %}
+        <div class="mt-6 bg-earth-50 border border-earth-200 rounded-2xl p-5 flex items-center gap-3">
+          <i data-lucide="external-link" class="w-5 h-5 text-earth-500 shrink-0"></i>
+          <a href="{{ product.video_url }}" target="_blank"
+            class="text-earth-600 hover:text-earth-800 text-sm underline break-all">
+            مشاهده ویدیوی معرفی محصول
+          </a>
+        </div>
       {% endif %}
+
     </div>
     
     <!-- ── Product info ── -->
@@ -135,21 +171,21 @@
 </a>
 
 <!-- Features -->
-<div class="grid grid-cols-2 gap-3 text-sm">
-  <div class="flex items-center gap-2 text-earth-600">
-    <i data-lucide="truck" class="w-4 h-4 text-earth-400 shrink-0"></i>
+<div class="grid grid-cols-2 gap-4 text-sm">
+  <div class="flex items-center gap-2.5 text-earth-600">
+    <i data-lucide="truck" class="w-10 h-10 text-earth-500 shrink-0"></i>
     ارسال به سراسر کشور
   </div>
-  <div class="flex items-center gap-2 text-earth-600">
-    <i data-lucide="shield-check" class="w-4 h-4 text-earth-400 shrink-0"></i>
+  <div class="flex items-center gap-2.5 text-earth-600">
+    <i data-lucide="shield-check" class="w-10 h-10 text-earth-500 shrink-0"></i>
     ضمانت کیفیت
   </div>
-  <div class="flex items-center gap-2 text-earth-600">
-    <i data-lucide="leaf" class="w-4 h-4 text-green-500 shrink-0"></i>
+  <div class="flex items-center gap-2.5 text-earth-600">
+    <i data-lucide="leaf" class="w-10 h-10 text-green-500 shrink-0"></i>
     محصول طبیعی
   </div>
-  <div class="flex items-center gap-2 text-earth-600">
-    <i data-lucide="package-check" class="w-4 h-4 text-earth-400 shrink-0"></i>
+  <div class="flex items-center gap-2.5 text-earth-600">
+    <i data-lucide="package-check" class="w-10 h-10 text-earth-500 shrink-0"></i>
     بسته‌بندی مناسب
   </div>
 </div>
@@ -200,16 +236,133 @@
 {% endif %}
 
 </div>
+<!-- ══════════════════════════════════════════
+     LIGHTBOX OVERLAY
+══════════════════════════════════════════ -->
+<div id="lightbox"
+     class="fixed inset-0 bg-black/95 z-[100] hidden items-center justify-center">
+
+  <!-- Close button -->
+  <button onclick="closeLightbox()"
+          class="absolute top-5 left-5 text-white/80 hover:text-white w-11 h-11 flex items-center justify-center rounded-full hover:bg-white/10 transition z-10">
+    <i data-lucide="x" class="w-6 h-6"></i>
+  </button>
+
+  <!-- Image counter -->
+  <div id="lightbox-counter"
+       class="absolute top-5 right-5 text-white/70 text-sm font-medium z-10"></div>
+
+  <!-- Previous arrow -->
+  <button onclick="changeLightboxImage(-1)"
+          class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/80 hover:text-white w-11 h-11 md:w-14 md:h-14 flex items-center justify-center rounded-full hover:bg-white/10 transition z-10">
+    <i data-lucide="chevron-right" class="w-7 h-7 md:w-8 md:h-8"></i>
+  </button>
+
+  <!-- Next arrow -->
+  <button onclick="changeLightboxImage(1)"
+          class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/80 hover:text-white w-11 h-11 md:w-14 md:h-14 flex items-center justify-center rounded-full hover:bg-white/10 transition z-10">
+    <i data-lucide="chevron-left" class="w-7 h-7 md:w-8 md:h-8"></i>
+  </button>
+
+  <!-- Image -->
+  <img id="lightbox-image" src="" alt=""
+       class="max-w-[90vw] max-h-[85vh] object-contain rounded-lg">
+
+</div>
 
 {% endblock %}
 
 {% block extra_js %}
 <script>
+  // ── Build the image list from Django data ──
+  const productImages = [
+    {% if product.cover_image %}"{{ product.cover_image.url }}",{% endif %}
+    {% for img in gallery_images %}"{{ img.image.url }}",{% endfor %}
+  ];
+
+  let currentImageIndex = 0;
+
+  // ── Quantity stepper (already existed — kept here) ──
   function changeQty(delta) {
     const input = document.getElementById('qty');
     const max   = parseInt(input.max);
     const val   = parseInt(input.value) + delta;
     if (val >= 1 && val <= max) input.value = val;
   }
+
+  // ── Switch main image when a thumbnail is clicked ──
+  function setActiveImage(index) {
+    currentImageIndex = index;
+    const mainImg = document.getElementById('main-image');
+    if (mainImg && productImages[index]) {
+      mainImg.src = productImages[index];
+    }
+    document.querySelectorAll('.thumbnail-img').forEach(thumb => {
+      const isActive = parseInt(thumb.dataset.index) === index;
+      thumb.classList.toggle('border-earth-400', isActive);
+      thumb.classList.toggle('border-transparent', !isActive);
+    });
+  }
+
+  // ── Zoom on hover (magnifying effect) ──
+  const zoomContainer = document.getElementById('zoom-container');
+  const mainImage      = document.getElementById('main-image');
+
+  if (zoomContainer && mainImage) {
+    zoomContainer.addEventListener('mousemove', (e) => {
+      const rect = zoomContainer.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      mainImage.style.transformOrigin = `${x}% ${y}%`;
+      mainImage.style.transform = 'scale(2)';
+    });
+
+    zoomContainer.addEventListener('mouseleave', () => {
+      mainImage.style.transform = 'scale(1)';
+    });
+  }
+
+  // ── Lightbox ──
+  const lightbox        = document.getElementById('lightbox');
+  const lightboxImage   = document.getElementById('lightbox-image');
+  const lightboxCounter = document.getElementById('lightbox-counter');
+
+  function updateLightboxImage() {
+    if (!productImages[currentImageIndex]) return;
+    lightboxImage.src = productImages[currentImageIndex];
+    lightboxCounter.textContent = `${currentImageIndex + 1} / ${productImages.length}`;
+  }
+
+  function openLightbox(index) {
+    currentImageIndex = index;
+    updateLightboxImage();
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  function changeLightboxImage(direction) {
+    currentImageIndex = (currentImageIndex + direction + productImages.length) % productImages.length;
+    updateLightboxImage();
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (lightbox.classList.contains('hidden')) return;
+    if (e.key === 'ArrowLeft')  changeLightboxImage(1);   // RTL: left arrow = next
+    if (e.key === 'ArrowRight') changeLightboxImage(-1);  // RTL: right arrow = prev
+    if (e.key === 'Escape')     closeLightbox();
+  });
+
+  // Close when clicking the dark backdrop (but not the image itself)
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
 </script>
 {% endblock %}

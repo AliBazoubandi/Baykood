@@ -44,11 +44,13 @@ def product_detail(request, slug):
     related        = Product.objects.filter(
         category=product.category, is_available=True
     ).exclude(id=product.id)[:4]
+    embed_url      = product.get_embed_url()
 
     return render(request, 'shop/product_detail.html', {
         'product':        product,
         'gallery_images': gallery_images,
         'related':        related,
+        'embed_url':      embed_url,
     })
 
 

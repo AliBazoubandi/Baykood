@@ -75,6 +75,10 @@ class ProductAdmin(admin.ModelAdmin):
         ('تصویر اصلی', {
             'fields': ('cover_image',)
         }),
+        ('رسانه', {
+        'fields': ('cover_image', 'video_url'),
+        'description': 'برای افزودن ویدیوی معرفی، لینک YouTube یا Instagram را وارد کنید'
+        }),
     )
 
     def cover_preview(self, obj):

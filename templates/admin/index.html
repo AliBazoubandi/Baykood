@@ -1,0 +1,201 @@
+{% extends "admin/index.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  .dashboard-wrap {
+    margin-bottom: 32px;
+  }
+
+  .dashboard-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--body-fg, #333);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #8c6a3a;
+    display: inline-block;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card {
+    background: var(--darkened-bg, #f8f8f8);
+    border: 1px solid var(--hairline-color, #ddd);
+    border-radius: 12px;
+    padding: 18px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--body-quiet-color, #888);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--body-fg, #333);
+  }
+
+  .stat-value.brown  { color: #b08a56; }
+  .stat-value.green  { color: #16a34a; }
+  .stat-value.red    { color: #dc2626; }
+  .stat-value.blue   { color: #2563eb; }
+  .stat-value.amber  { color: #d97706; }
+
+  .panel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 767px) {
+    .panel-grid { grid-template-columns: 1fr; }
+  }
+
+  .panel-box {
+    background: var(--darkened-bg, #f8f8f8);
+    border: 1px solid var(--hairline-color, #ddd);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .panel-box h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--body-fg, #333);
+    margin: 0 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .panel-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 4px;
+    border-bottom: 1px solid var(--hairline-color, #eee);
+    font-size: 13px;
+  }
+
+  .panel-row:last-child { border-bottom: none; }
+
+  .panel-row a {
+    color: var(--link-fg, #503a24);
+    text-decoration: none;
+  }
+
+  .panel-row a:hover { text-decoration: underline; }
+
+  .panel-empty {
+    color: var(--body-quiet-color, #999);
+    font-size: 13px;
+    padding: 8px 4px;
+  }
+
+  .badge-amount {
+    font-weight: 600;
+    color: #8c6a3a;
+    white-space: nowrap;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-wrap">
+
+  <div class="dashboard-title">📊 آمار کلی فروشگاه</div>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-label">💰 مجموع فروش</div>
+      <div class="stat-value green">{{ total_revenue|floatformat:0 }} <span style="font-size:13px;">تومان</span></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">⏳ سفارش‌های در انتظار</div>
+      <div class="stat-value amber">{{ pending_orders }}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">📦 تعداد کل سفارش‌ها</div>
+      <div class="stat-value">{{ total_orders }}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">🛒 تعداد محصولات</div>
+      <div class="stat-value">{{ total_products }}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">⚠️ محصولات ناموجود</div>
+      <div class="stat-value red">{{ out_of_stock_count }}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">📝 مقالات منتشرشده</div>
+      <div class="stat-value">{{ total_posts }}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">✉️ پیام‌های خوانده‌نشده</div>
+      <div class="stat-value blue">{{ unread_messages }}</div>
+    </div>
+  </div>
+
+  <div class="panel-grid">
+
+    <div class="panel-box">
+      <h3>⚠️ محصولات با موجودی کم</h3>
+      {% if low_stock_products %}
+        {% for product in low_stock_products %}
+          <div class="panel-row">
+            <a href="/admin/shop/product/{{ product.id }}/change/">{{ product.name }}</a>
+            <span class="badge-amount">{{ product.stock }} عدد</span>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="panel-empty">موجودی همه محصولات مناسب است ✅</p>
+      {% endif %}
+    </div>
+
+    <div class="panel-box">
+      <h3>🕒 آخرین سفارش‌ها</h3>
+      {% if recent_orders %}
+        {% for order in recent_orders %}
+          <div class="panel-row">
+            <a href="/admin/shop/order/{{ order.id }}/change/">#{{ order.id }} — {{ order.full_name }}</a>
+            <span class="badge-amount">{{ order.formatted_total }}</span>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="panel-empty">هنوز سفارشی ثبت نشده است</p>
+      {% endif %}
+    </div>
+
+  </div>
+
+</div>
+
+{{ block.super }}
+
+{% endblock %}

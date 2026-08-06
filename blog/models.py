@@ -54,6 +54,12 @@ class Post(models.Model):
         if self.cover_image:
             self.cover_image = optimize_image(self.cover_image, max_size=(1400, 900))
         super().save(*args, **kwargs)
+        
+    def reading_time(self):
+        """Estimates reading time in minutes based on word count (Persian avg ~200 wpm)."""
+        word_count = len(self.body.split())
+        minutes = max(1, round(word_count / 200))
+        return minutes
 
     def get_embed_url(self):
         """Converts a YouTube or Instagram URL into an embeddable URL."""

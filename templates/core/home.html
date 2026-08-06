@@ -267,7 +267,11 @@
                   {{ post.title|truncatewords:8 }}
                 </h3>
               </a>
-              <p class="text-earth-500 text-sm line-clamp-2">{{ post.body|truncatewords:15 }}</p>
+              <p class="text-earth-500 text-sm line-clamp-2 mb-2">{{ post.body|truncatewords:15 }}</p>
+              <div class="flex items-center gap-1.5 text-earth-400 text-xs">
+                <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                {{ post.reading_time }} دقیقه مطالعه
+              </div>
             </div>
           </article>
           {% endfor %}

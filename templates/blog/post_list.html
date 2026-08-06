@@ -96,16 +96,22 @@
       </p>
       
       <div class="flex items-center justify-between text-xs text-earth-400">
-        <div class="flex items-center gap-1.5">
-          <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
-          {{ post.published_at|to_jalali }}
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-1.5">
+            <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+            {{ post.published_at|to_jalali }}
+          </div>
+          <div class="flex items-center gap-1.5">
+            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+            {{ post.reading_time }} دقیقه مطالعه
+          </div>
         </div>
         <a href="{{ post.get_absolute_url }}"
-        class="flex items-center gap-1 text-earth-600 hover:text-earth-800 font-medium transition">
-        ادامه مطلب
-        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-      </a>
-    </div>
+          class="flex items-center gap-1 text-earth-600 hover:text-earth-800 font-medium transition">
+          ادامه مطلب
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
   </div>
   
 </article>

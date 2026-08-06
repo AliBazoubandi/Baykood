@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load jalali_tags %}
 {% block title %}{{ post.title }} | {{ site.site_name }}{% endblock %}
 {% block meta_description %}{{ post.body|truncatewords:25|striptags }}{% endblock %}
 {% block og_title %}{{ post.title }} | {{ site.site_name }}{% endblock %}
@@ -41,7 +41,7 @@
 
   <div class="flex items-center gap-3 text-earth-400 text-sm mb-8">
     <i data-lucide="calendar" class="w-4 h-4"></i>
-    {{ post.published_at|date:"Y/m/d" }}
+    {{ post.published_at|to_jalali }}
   </div>
 
   <!-- Cover image -->

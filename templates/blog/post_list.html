@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load jalali_tags %}
 {% block title %}وبلاگ | {{ site.site_name }}{% endblock %}
 {% block meta_description %}وبلاگ آموزشی {{ site.site_name }} — مقالات و ویدیوهای آموزشی درباره کشاورزی، کوددهی و نگهداری گیاهان.{% endblock %}
 
@@ -98,7 +98,7 @@
       <div class="flex items-center justify-between text-xs text-earth-400">
         <div class="flex items-center gap-1.5">
           <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
-          {{ post.published_at|date:"Y/m/d" }}
+          {{ post.published_at|to_jalali }}
         </div>
         <a href="{{ post.get_absolute_url }}"
         class="flex items-center gap-1 text-earth-600 hover:text-earth-800 font-medium transition">

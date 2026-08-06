@@ -4,3 +4,4 @@ pillow
 python-decouple
 gunicorn
 whitenoise
+django-jalali

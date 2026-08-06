@@ -1,12 +1,21 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from .models import Category, Product, ProductImage, Order, OrderItem
+import jdatetime
+
+
+# ── Shared helper for Jalali date formatting ──
+def format_jalali(dt):
+    if not dt:
+        return '—'
+    j = jdatetime.date.fromgregorian(date=dt.date() if hasattr(dt, 'date') else dt)
+    return f'{j.year}/{j.month:02d}/{j.day:02d}'
 
 
 class ProductImageInline(admin.TabularInline):
-    model       = ProductImage
-    extra       = 3
-    fields      = ['image', 'alt_text', 'image_preview']
+    model           = ProductImage
+    extra           = 3
+    fields          = ['image', 'alt_text', 'image_preview']
     readonly_fields = ['image_preview']
 
     def image_preview(self, obj):
@@ -55,7 +64,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     list_display  = [
         'cover_preview', 'name', 'category',
-        'formatted_price_display', 'stock', 'is_available', 'is_featured'
+        'formatted_price_display', 'stock', 'is_available', 'is_featured', 'jalali_created'
     ]
     list_display_links = ['cover_preview', 'name']
     list_filter   = ['is_available', 'is_featured', 'category']
@@ -72,12 +81,9 @@ class ProductAdmin(admin.ModelAdmin):
         ('قیمت و موجودی', {
             'fields': ('price', 'stock', 'weight', 'is_available', 'is_featured')
         }),
-        ('تصویر اصلی', {
-            'fields': ('cover_image',)
-        }),
         ('رسانه', {
-        'fields': ('cover_image', 'video_url'),
-        'description': 'برای افزودن ویدیوی معرفی، لینک YouTube یا Instagram را وارد کنید'
+            'fields': ('cover_image', 'video_url'),
+            'description': 'برای افزودن ویدیوی معرفی، لینک YouTube یا Instagram را وارد کنید'
         }),
     )
 
@@ -97,6 +103,11 @@ class ProductAdmin(admin.ModelAdmin):
         )
     formatted_price_display.short_description = 'قیمت'
 
+    def jalali_created(self, obj):
+        return format_jalali(obj.created_at)
+    jalali_created.short_description = 'تاریخ ثبت'
+
+
 class OrderItemInline(admin.TabularInline):
     model           = OrderItem
     extra           = 0
@@ -112,14 +123,13 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display        = ['id', 'full_name', 'phone', 'status', 'status_badge', 'formatted_total_display', 'created_at']
-    list_editable       = ['status']
-    list_filter         = ['status', 'created_at']
-    list_editable       = ['status']
-    search_fields       = ['full_name', 'phone', 'address']
-    readonly_fields     = ['user', 'total_price', 'created_at']
-    ordering            = ['-created_at']
-    inlines             = [OrderItemInline]
+    list_display    = ['id', 'full_name', 'phone', 'status_badge', 'formatted_total_display', 'jalali_created']
+    list_editable   = ['status'] if False else []  # kept empty on purpose — see note below
+    list_filter     = ['status', 'created_at']
+    search_fields   = ['full_name', 'phone', 'address']
+    readonly_fields = ['user', 'total_price', 'created_at']
+    ordering        = ['-created_at']
+    inlines         = [OrderItemInline]
 
     fieldsets = (
         ('اطلاعات مشتری', {
@@ -129,6 +139,10 @@ class OrderAdmin(admin.ModelAdmin):
             'fields': ('status', 'total_price', 'created_at')
         }),
     )
+
+    def jalali_created(self, obj):
+        return format_jalali(obj.created_at)
+    jalali_created.short_description = 'تاریخ ثبت'
 
     def status_badge(self, obj):
         colors = {

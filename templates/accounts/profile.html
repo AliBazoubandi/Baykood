@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-
+{% load static %}
+{% load jalali_tags %}
 {% block title %}پروفایل من | {{ site.site_name }}{% endblock %}
 
 {% block content %}
@@ -117,7 +118,7 @@
                     </div>
                     <div>
                       <p class="font-medium text-earth-800 text-sm">سفارش #{{ order.id }}</p>
-                      <p class="text-earth-400 text-xs mt-0.5">{{ order.created_at|date:"Y/m/d" }}</p>
+                      <p class="text-earth-400 text-xs mt-0.5">{{ order.created_at|to_jalali }}</p>
                     </div>
                   </div>
                   <div class="flex items-center gap-4">

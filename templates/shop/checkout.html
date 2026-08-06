@@ -73,7 +73,8 @@
               <div class="flex items-center gap-3">
                 {% if item.product.cover_image %}
                   <img src="{{ item.product.cover_image.url }}" alt="{{ item.product.name }}"
-                       class="w-12 h-12 object-cover rounded-lg shrink-0">
+                      loading="lazy"
+                      class="w-12 h-12 object-cover rounded-lg shrink-0">
                 {% else %}
                   <div class="w-12 h-12 bg-earth-100 rounded-lg flex items-center justify-center shrink-0">
                     <i data-lucide="sprout" class="w-5 h-5 text-earth-300"></i>

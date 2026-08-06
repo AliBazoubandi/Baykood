@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.text import slugify
 from django.urls import reverse
+from core.utils import optimize_image
+
 
 
 class Tag(models.Model):
@@ -49,6 +51,8 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title, allow_unicode=True)
+        if self.cover_image:
+            self.cover_image = optimize_image(self.cover_image, max_size=(1400, 900))
         super().save(*args, **kwargs)
 
     def get_embed_url(self):

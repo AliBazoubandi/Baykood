@@ -58,7 +58,7 @@
       
       <a href="{{ post.get_absolute_url }}" class="block h-52 overflow-hidden relative">
         {% if post.cover_image %}
-        <img src="{{ post.cover_image.url }}" alt="{{ post.title }}"
+        <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" loading="lazy"
         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
         {% else %}
         <div class="w-full h-full bg-gradient-to-br from-earth-200 to-earth-300 flex items-center justify-center">

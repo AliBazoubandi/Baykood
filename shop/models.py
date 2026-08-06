@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.text import slugify
 from django.urls import reverse
+from core.utils import optimize_image
+
 
 
 class Category(models.Model):
@@ -77,6 +79,8 @@ class Category(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name, allow_unicode=True)
+        if self.image:
+            self.image = optimize_image(self.image, max_size=(800, 800))
         super().save(*args, **kwargs)
 
 
@@ -114,6 +118,8 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name, allow_unicode=True)
+        if self.cover_image:
+            self.cover_image = optimize_image(self.cover_image)
         super().save(*args, **kwargs)
 
     def formatted_price(self):
@@ -161,6 +167,11 @@ class ProductImage(models.Model):
         verbose_name        = 'تصویر محصول'
         verbose_name_plural = 'تصاویر محصول'
 
+    def save(self, *args, **kwargs):
+        if self.image:
+            self.image = optimize_image(self.image, max_size=(1200, 1200))
+        super().save(*args, **kwargs)
+        
     def __str__(self):
         return f'تصویر برای {self.product.name}'
     

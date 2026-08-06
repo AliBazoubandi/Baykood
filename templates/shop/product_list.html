@@ -73,7 +73,7 @@
       <!-- Image -->
       <a href="{{ product.get_absolute_url }}" class="block relative overflow-hidden h-56">
         {% if product.cover_image %}
-        <img src="{{ product.cover_image.url }}" alt="{{ product.name }}"
+        <img src="{{ product.cover_image.url }}" alt="{{ product.name }}" loading="lazy"
         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
         {% else %}
         <div class="w-full h-full bg-earth-100 flex items-center justify-center">

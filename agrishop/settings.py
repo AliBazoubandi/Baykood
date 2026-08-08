@@ -11,6 +11,12 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = ['*'] # should change this for the production to some specific IPs
 SITE_DOMAIN = 'localhost:8000'  # change to yourdomain.com when deploying
 
+RAILWAY_PUBLIC_DOMAIN = os.environ.get('RAILWAY_PUBLIC_DOMAIN')
+
+CSRF_TRUSTED_ORIGINS = []
+if RAILWAY_PUBLIC_DOMAIN:
+    CSRF_TRUSTED_ORIGINS.append(f'https://{RAILWAY_PUBLIC_DOMAIN}')
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
